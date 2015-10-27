@@ -1,10 +1,10 @@
 ﻿namespace Domain
 {
-    public class Donor
+    public class Donor: BaseEntity
     {
-        public int Id { get; set; }
+
         public string FinderNumber { get; set; }
-        public string ConstituentId  { get; set; }
+        public int? ConstituentId  { get; set; }
         public string DonorType { get; set; }
         public string AccountType { get; set; }
         public string Name { get; set; }
