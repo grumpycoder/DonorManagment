@@ -20,4 +20,4 @@ namespace Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
     }
-}
+}   

@@ -138,6 +138,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Dashboard\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Dashboard\DashboardAreaRegistration.cs" />
+    <Compile Include="Areas\DonorTax\DonorTaxAreaRegistration.cs" />
+    <Compile Include="Areas\MarkIt\MarkItAreaRegistration.cs" />
+    <Compile Include="Areas\ReservationManager\ReservationManagerAreaRegistration.cs" />
+    <Compile Include="Areas\Reservation\ReservationAreaRegistration.cs" />
+    <Compile Include="Areas\TaxManager\TaxManagerAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -153,6 +160,15 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Dashboard\Views\web.config" />
+    <Content Include="Areas\MarkIt\Views\web.config" />
+    <Content Include="Areas\ReservationManager\Views\web.config" />
+    <Content Include="Areas\Reservation\Views\web.config" />
+    <Content Include="Areas\TaxManager\Views\web.config" />
+    <Content Include="Areas\DonorTax\Views\web.config" />
+    <Content Include="Areas\Dashboard\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Dashboard\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Dashboard\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -182,6 +198,22 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Dashboard\Models\" />
+    <Folder Include="Areas\DonorTax\Controllers\" />
+    <Folder Include="Areas\DonorTax\Models\" />
+    <Folder Include="Areas\DonorTax\Views\Shared\" />
+    <Folder Include="Areas\MarkIt\Controllers\" />
+    <Folder Include="Areas\MarkIt\Models\" />
+    <Folder Include="Areas\MarkIt\Views\Shared\" />
+    <Folder Include="Areas\ReservationManager\Controllers\" />
+    <Folder Include="Areas\ReservationManager\Models\" />
+    <Folder Include="Areas\ReservationManager\Views\Shared\" />
+    <Folder Include="Areas\Reservation\Controllers\" />
+    <Folder Include="Areas\Reservation\Models\" />
+    <Folder Include="Areas\Reservation\Views\Shared\" />
+    <Folder Include="Areas\TaxManager\Controllers\" />
+    <Folder Include="Areas\TaxManager\Models\" />
+    <Folder Include="Areas\TaxManager\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
