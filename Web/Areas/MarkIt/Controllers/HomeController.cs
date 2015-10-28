@@ -4,19 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Web.Controllers
+namespace Web.Areas.MarkIt.Controllers
 {
     public class HomeController : Controller
     {
+        // GET: MarkIt/Home
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult MyProfile()
-        {
-            return View();
-        }
-
     }
 }

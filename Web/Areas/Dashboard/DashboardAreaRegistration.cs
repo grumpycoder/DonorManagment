@@ -15,15 +15,15 @@ namespace Web.Areas.Dashboard
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-           name: "Dashboard_Default",
-           url: "Dashboard/{controller}/{action}/{id}",
-           defaults: new
-           {
-               area = "Dashboard",
-               controller = "Home",
-               action = "Index",
-               id = UrlParameter.Optional
-           });
+               name: "Dashboard_Default",
+               url: "Dashboard/{controller}/{action}/{id}",
+               defaults: new
+               {
+                   area = "Dashboard",
+                   controller = "Home",
+                   action = "Index",
+                   id = UrlParameter.Optional
+               });
 
             //            context.MapRoute(
             //                "Dashboard_default",

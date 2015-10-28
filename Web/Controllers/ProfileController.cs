@@ -6,17 +6,12 @@ using System.Web.Mvc;
 
 namespace Web.Controllers
 {
-    public class HomeController : Controller
+    public class ProfileController : Controller
     {
+        // GET: Profile
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult MyProfile()
-        {
-            return View();
-        }
-
     }
 }

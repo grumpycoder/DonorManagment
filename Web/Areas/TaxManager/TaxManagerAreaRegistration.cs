@@ -2,22 +2,22 @@
 
 namespace Web.Areas.TaxManager
 {
-    public class TaxManagerAreaRegistration : AreaRegistration 
+    public class TaxManagerAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "TaxManager";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "TaxManager_default",
                 "TaxManager/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { area = "TaxManager", controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

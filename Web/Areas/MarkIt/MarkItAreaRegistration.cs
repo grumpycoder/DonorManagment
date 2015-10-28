@@ -14,10 +14,11 @@ namespace Web.Areas.MarkIt
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
+            
             context.MapRoute(
                 "MarkIt_default",
                 "MarkIt/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                defaults: new { area = "MarkIt", controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

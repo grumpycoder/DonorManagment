@@ -57,6 +57,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.Futures.5.0.0\lib\net40\Microsoft.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -141,35 +145,65 @@
     <Compile Include="Areas\Dashboard\Controllers\HomeController.cs" />
     <Compile Include="Areas\Dashboard\DashboardAreaRegistration.cs" />
     <Compile Include="Areas\DonorTax\DonorTaxAreaRegistration.cs" />
+    <Compile Include="Areas\EventManager\Controllers\HomeController.cs" />
+    <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
+    <Compile Include="Areas\MarkIt\Controllers\HomeController.cs" />
     <Compile Include="Areas\MarkIt\MarkItAreaRegistration.cs" />
-    <Compile Include="Areas\ReservationManager\ReservationManagerAreaRegistration.cs" />
     <Compile Include="Areas\Reservation\ReservationAreaRegistration.cs" />
+    <Compile Include="Areas\TaxManager\Controllers\HomeController.cs" />
     <Compile Include="Areas\TaxManager\TaxManagerAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\layout.css" />
+    <Content Include="Content\sb-admin-rtl.css" />
+    <Content Include="Content\sb-admin.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Dashboard\Views\web.config" />
     <Content Include="Areas\MarkIt\Views\web.config" />
-    <Content Include="Areas\ReservationManager\Views\web.config" />
     <Content Include="Areas\Reservation\Views\web.config" />
     <Content Include="Areas\TaxManager\Views\web.config" />
     <Content Include="Areas\DonorTax\Views\web.config" />
     <Content Include="Areas\Dashboard\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Dashboard\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Dashboard\Views\Home\Index.cshtml" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Areas\EventManager\Views\web.config" />
+    <Content Include="Areas\MarkIt\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\MarkIt\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\MarkIt\Views\Home\Index.cshtml" />
+    <Content Include="Areas\EventManager\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\EventManager\Views\Home\Index.cshtml" />
+    <Content Include="Areas\EventManager\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\TaxManager\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\TaxManager\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -192,34 +226,27 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Shared\_Navigation.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\MyProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Dashboard\Models\" />
+    <Folder Include="Areas\Dashboard\Views\Shared\" />
     <Folder Include="Areas\DonorTax\Controllers\" />
     <Folder Include="Areas\DonorTax\Models\" />
     <Folder Include="Areas\DonorTax\Views\Shared\" />
-    <Folder Include="Areas\MarkIt\Controllers\" />
+    <Folder Include="Areas\EventManager\Models\" />
     <Folder Include="Areas\MarkIt\Models\" />
-    <Folder Include="Areas\MarkIt\Views\Shared\" />
-    <Folder Include="Areas\ReservationManager\Controllers\" />
-    <Folder Include="Areas\ReservationManager\Models\" />
-    <Folder Include="Areas\ReservationManager\Views\Shared\" />
     <Folder Include="Areas\Reservation\Controllers\" />
     <Folder Include="Areas\Reservation\Models\" />
     <Folder Include="Areas\Reservation\Views\Shared\" />
-    <Folder Include="Areas\TaxManager\Controllers\" />
     <Folder Include="Areas\TaxManager\Models\" />
     <Folder Include="Areas\TaxManager\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
