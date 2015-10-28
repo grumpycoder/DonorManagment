@@ -1,0 +1,108 @@
+﻿@model Web.Areas.DonorTax.Models.TaxViewModel
+@{
+    ViewBag.Title = "Tax Receipts";
+}
+
+@section css {
+    <link href="@Url.Content("~/content/tax-receipt.css")" rel="stylesheet" />
+}
+
+@using (Html.BeginForm())
+{
+
+<!-- BEGIN SEARCH AREA -->
+<div class="panel panel-primary">
+    <div class="panel-heading">Search</div>
+    <div class="panel-body">
+        <!--Search box here-->
+        <div class="form-group">
+            @Html.LabelFor(m => m.SearchEntity.ConstituentId, "Supporter Id")
+            @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new {@class = "form-control"})
+        </div>
+        <div class="form-group">
+            <input type="checkbox" value="" />
+            <label class="control-label">I have read and accept the policy</label>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <button id="btnSearch"
+                class="btn btn-sm btn-primary"
+                data-tax-action="search">
+            <i class="glyphicon glyphicon-search"></i>
+            &nbsp;Search
+        </button>
+        <button id="btnReset"
+                class="btn btn-sm btn-primary"
+                data-tax-action="resetsearch">
+            <i class="glyphicon glyphicon-share-alt"></i>
+            &nbsp;Reset
+        </button>
+    </div>
+</div>
+<!-- END SEARCH AREA -->
+
+<!-- BEGIN DETAILS/GRID AREA -->
+
+    if (@Model.Entity != null)
+    {
+        <div class="well well-sm lead">@Model.Entity.Name</div>
+
+        <table class="table table-condensed table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Tax Year</th>
+                <th>Donation Date</th>
+                <th>Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Entity.TaxItems)
+            {
+                <tr>
+                    <td>@item.TaxYear</td>
+                    <td>@item.DonationDate</td>
+                    <td>@item.Amount</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+
+    <!-- END DETAILS/GRID AREA -->
+
+}
+
+@section scripts {
+
+    <script>
+    $(document).ready(function () {
+      $("[data-tax-action]").on("click", function (e) {
+        e.preventDefault();
+
+        $("#EventCommand").val(
+          $(this).data("tax-action"));
+
+        $("form").submit();
+      });
+    });
+    </script>
+
+}
+
+
+@*<h2>Tax Receipt</h2>
+
+<form>
+    <div class="form-group">
+        <label class="control-label">Supporter Id</label>
+        <input type="text" value="" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" value=""/>
+        <label class="control-label">I have read and accept the policy</label>
+    </div>
+    <button class="btn btn-primary">Submit</button>
+</form>*@
+
+
+

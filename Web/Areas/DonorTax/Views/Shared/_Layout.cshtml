@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html ng-app="beholder">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/css/all.css")
+    @RenderSection("css", required: false)
+    <meta name="Donor Tax Landing Page" content="Donor Tax Landing Page" />
+</head>
+<body>
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/scripts/all.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

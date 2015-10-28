@@ -17,7 +17,7 @@ namespace Web.Areas.DonorTax
             context.MapRoute(
                 "DonorTax_default",
                 "DonorTax/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { area="DonorTax", controller="Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

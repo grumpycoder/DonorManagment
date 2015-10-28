@@ -52,6 +52,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -144,7 +152,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Dashboard\Controllers\HomeController.cs" />
     <Compile Include="Areas\Dashboard\DashboardAreaRegistration.cs" />
+    <Compile Include="Areas\DonorTax\Controllers\HomeController.cs" />
     <Compile Include="Areas\DonorTax\DonorTaxAreaRegistration.cs" />
+    <Compile Include="Areas\DonorTax\Models\TaxViewModel.cs" />
     <Compile Include="Areas\EventManager\Controllers\HomeController.cs" />
     <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
     <Compile Include="Areas\MarkIt\Controllers\HomeController.cs" />
@@ -152,6 +162,7 @@
     <Compile Include="Areas\Reservation\ReservationAreaRegistration.cs" />
     <Compile Include="Areas\TaxManager\Controllers\HomeController.cs" />
     <Compile Include="Areas\TaxManager\TaxManagerAreaRegistration.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
@@ -169,6 +180,7 @@
     <Content Include="Content\layout.css" />
     <Content Include="Content\sb-admin-rtl.css" />
     <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\tax-receipt.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -201,6 +213,9 @@
     <Content Include="Areas\EventManager\Views\_ViewStart.cshtml" />
     <Content Include="Areas\TaxManager\Views\_ViewStart.cshtml" />
     <Content Include="Areas\TaxManager\Views\Home\Index.cshtml" />
+    <Content Include="Areas\DonorTax\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\DonorTax\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\DonorTax\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -234,9 +249,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Dashboard\Models\" />
     <Folder Include="Areas\Dashboard\Views\Shared\" />
-    <Folder Include="Areas\DonorTax\Controllers\" />
-    <Folder Include="Areas\DonorTax\Models\" />
-    <Folder Include="Areas\DonorTax\Views\Shared\" />
     <Folder Include="Areas\EventManager\Models\" />
     <Folder Include="Areas\MarkIt\Models\" />
     <Folder Include="Areas\Reservation\Controllers\" />
@@ -250,6 +262,12 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{35a4e1fe-91c2-40e0-a3f2-faf2d67c926c}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
