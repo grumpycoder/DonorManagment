@@ -15,6 +15,18 @@
     -ms-border-radius: 0;
     border-radius: 0;
 }
+.btn-primary {
+    background-color: #234472; 
+}
+
+.btn-info:hover {
+    background-color: #d5292a;
+}
+
+.btn-info {
+    background-color: #9c3022; 
+        border-color: #9c3022 !important;
+}
 
 table {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
