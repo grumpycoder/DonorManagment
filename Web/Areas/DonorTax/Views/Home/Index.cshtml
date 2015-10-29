@@ -4,105 +4,165 @@
 }
 
 @section css {
+    <link rel="stylesheet" type="text/css" href="//cloud.typography.com/71500/671746/css/fonts.css" />
     <link href="@Url.Content("~/content/tax-receipt.css")" rel="stylesheet" />
 }
-
-@using (Html.BeginForm())
-{
-
-<!-- BEGIN SEARCH AREA -->
-<div class="panel panel-primary">
-    <div class="panel-heading">Search</div>
-    <div class="panel-body">
-        <!--Search box here-->
-        <div class="form-group">
-            @Html.LabelFor(m => m.SearchEntity.ConstituentId, "Supporter Id")
-            @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new {@class = "form-control"})
-        </div>
-        <div class="form-group">
-            <input type="checkbox" value="" />
-            <label class="control-label">I have read and accept the policy</label>
+<header>
+    <div class="container">
+        <a class="logo" href="http://www.splcenter.org"></a>
+        <div class="nav-toggle">
+            <a href="#"><i class="fa fa-bars"></i></a>
         </div>
     </div>
-    <div class="panel-footer">
-        <button id="btnSearch"
-                class="btn btn-sm btn-primary"
-                data-tax-action="search">
-            <i class="glyphicon glyphicon-search"></i>
-            &nbsp;Search
-        </button>
-        <button id="btnReset"
-                class="btn btn-sm btn-primary"
-                data-tax-action="resetsearch">
-            <i class="glyphicon glyphicon-share-alt"></i>
-            &nbsp;Reset
-        </button>
-    </div>
-</div>
-<!-- END SEARCH AREA -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li>
+                    <a href="http://www.splcenter.org/what-we-do">What We Do</a>
+                </li>
+                <li>
+                    <a href="http://www.splcenter.org/our-issues">Our Issues</a>
+                </li>
+                <li>
+                    <a href="http://www.splcenter.org/resources">Resources</a>
+                </li>
+                <li>
+                    <a href="http://www.splcenter.org/hate-map">Hate Map</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
-<!-- BEGIN DETAILS/GRID AREA -->
+<div class="container form">
+    <section>
+        <p>
+            To view and print your tax receipt for donations made to SPLC in 2014, please enter the Supporter ID number that was provided to you.
+            Your 2014 tax receipt will be available through October 31, 2015.
+            Thank you for your generous support of the Southern Poverty Law Center.
 
-    if (@Model.Entity != null)
-    {
-        <div class="well well-sm lead">@Model.Entity.Name</div>
+        </p>
+    </section>
+    <section>
+        @using (Html.BeginForm())
+        {
+            <!-- BEGIN HIDDEN FIELDS AREA -->
+            @Html.HiddenFor(m => m.EventCommand)
+            <!-- END HIDDEN FIELDS AREA -->
 
-        <table class="table table-condensed table-bordered table-striped table-hover">
-            <thead>
-            <tr>
-                <th>Tax Year</th>
-                <th>Donation Date</th>
-                <th>Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var item in Model.Entity.TaxItems)
+            <!-- BEGIN SEARCH AREA -->
+            <div class="panel panel-default">
+                <div class="panel-heading">Enter your Supporter Id</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        @*@Html.LabelFor(m => m.SearchEntity.ConstituentId, "Supporter Id")*@
+                        @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new { @class = "input" })
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox-inline">
+
+                            @Html.CheckBoxFor(m => m.AcceptTerms)
+                            @Html.LabelFor(m => m.AcceptTerms)
+                            @*<label class="control-label">I have read and accept the policy</label>*@
+                        </div>
+                    </div>
+                    <button id="btnSearch"
+                            class="btn btn-sm btn-primary form-submit"
+                            data-tax-action="search">
+                        <i class="fa fa-search"></i>&nbsp;Search
+                    </button>
+                </div>
+
+            </div>
+            <!-- END SEARCH AREA -->
+
+            <!-- BEGIN DETAILS/GRID AREA -->
+            if (@Model.IsDetailsVisible)
             {
-                <tr>
-                    <td>@item.TaxYear</td>
-                    <td>@item.DonationDate</td>
-                    <td>@item.Amount</td>
-                </tr>
+
+                <div class="row well well-sm">
+                    <div class="form-group">
+                        <span class="lead">@Model.Entity.Name</span>
+
+                        <address class="pull-right">
+                            @Model.Entity.Street <br />
+                            @Model.Entity.Street2 <br />
+                            @($"{@Model.Entity.City}, {@Model.Entity.State} {@Model.Entity.Zipcode}") <br />
+                        </address>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            @Html.DropDownListFor(model => model.SelectedTaxYear, Enumerable.Range(2010, DateTime.Now.Year - 2010).Select(x => new SelectListItem { Text = x.ToString() }), "Tax Year", new { @class = "form-control select" })
+                        </div>
+                    </div>
+                    <div class="col-sm-4 form-group">
+                        <button id="btnSearch"
+                                class="btn btn-primary"
+                                data-tax-action="search">
+                            <i class="fa fa-filter"></i>
+                            &nbsp;Filter
+                        </button>
+                        <button class="btn btn-success"><i class="fa fa-print"></i>&nbsp;Print</button>
+                    </div>
+                </div>
+                <table class="table table-condensed table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tax Year</th>
+                            <th>Donation Date</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.TaxItems)
+                        {
+                            <tr>
+                                <td>@item.TaxYear</td>
+                                <td>@($"{@item.DonationDate:MM/dd/yyyy}")</td>
+                                <td>@item.Amount</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td class="text-right">Total</td>
+                            <td>
+                                @Model.TotalTax
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
             }
-            </tbody>
-        </table>
-    }
 
-    <!-- END DETAILS/GRID AREA -->
+            <!-- END DETAILS/GRID AREA -->
 
-}
+        }
+    </section>
+</div>
+
+
 
 @section scripts {
 
     <script>
-    $(document).ready(function () {
-      $("[data-tax-action]").on("click", function (e) {
-        e.preventDefault();
+        $(document).ready(function () {
+            $("[data-tax-action]").on("click", function (e) {
+                e.preventDefault();
 
-        $("#EventCommand").val(
-          $(this).data("tax-action"));
+                $("#EventCommand").val(
+                  $(this).data("tax-action"));
 
-        $("form").submit();
-      });
-    });
+                $("form").submit();
+            });
+        });
     </script>
 
 }
 
-
-@*<h2>Tax Receipt</h2>
-
-<form>
-    <div class="form-group">
-        <label class="control-label">Supporter Id</label>
-        <input type="text" value="" class="form-control"/>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" value=""/>
-        <label class="control-label">I have read and accept the policy</label>
-    </div>
-    <button class="btn btn-primary">Submit</button>
-</form>*@
 
 
 

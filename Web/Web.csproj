@@ -180,6 +180,8 @@
     <Content Include="Content\layout.css" />
     <Content Include="Content\sb-admin-rtl.css" />
     <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\splcenter-base.css" />
+    <Content Include="Content\splcenter.css" />
     <Content Include="Content\tax-receipt.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -217,6 +219,9 @@
     <Content Include="Areas\DonorTax\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\DonorTax\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="img\chevron-down.png" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\logo_2x.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -229,6 +234,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\splc.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
