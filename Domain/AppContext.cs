@@ -31,5 +31,6 @@ namespace Domain
 
         public DbSet<Donor> Donors { get; set; }
         public DbSet<Constituent> Constituents { get; set; }
+        public DbSet<Template> Templates { get; set; }
     }
 }
