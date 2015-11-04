@@ -4,16 +4,18 @@
 }
 @section css {
     <link rel="stylesheet" type="text/css" href="//cloud.typography.com/71500/671746/css/fonts.css" />
-    <link href="@Url.Content("~/content/tax-receipt.css")" rel="stylesheet" />
+    @*    <link href="@Url.Content("~/content/tax-receipt.css")" rel="stylesheet" media="screen" />*@
+    <link href="@Url.Content("~/Content/tax-print.css")" rel="stylesheet" media="print" />
 }
+
 <header>
     <div class="container">
-        <a class="logo" href="http://www.splcenter.org"></a>
-        <div class="nav-toggle">
+        <a class="logo hidden-print" href="http://www.splcenter.org"></a>
+        <div class="nav-toggle hidden-print">
             <a href="#"><i class="fa fa-bars"></i></a>
         </div>
     </div>
-    <nav class="main-nav">
+    <nav class="main-nav hidden-print">
         <div class="container">
             <ul>
                 <li>
@@ -31,11 +33,33 @@
             </ul>
         </div>
     </nav>
+
+
+    <img class="pull-left visible-print" src="~/img/SPLC_LOGO.png" alt="SPLC Logo" width="300" />
+
+    <div class="visible-print pull-right" style="padding-bottom: 30px;">
+        <div class="small red">
+            Fighting Hate <br />
+            Teaching Tolerance<br />
+            Seeking Justice<br />
+        </div>
+        <br />
+        <div class="small">
+            Southern Poverty Law Center <br />
+            400 Washington Avenue<br />
+            Montgomery, AL 36104<br />
+            334.956.8200<br />
+            splcenter.org
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
 </header>
 
+
 <div class="container form">
-    <h2>@Model.Template.HeaderText</h2>
-    <section>
+    <h2 class="hidden-print">@Model.Template.HeaderText</h2>
+    <section class="hidden-print">
         <p>
             @Model.Template.BodyText
         </p>
@@ -48,18 +72,20 @@
             <!-- END HIDDEN FIELDS AREA -->
 
             <!-- BEGIN SEARCH AREA -->
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>Enter Your Information</strong></div>
+            <div class="panel panel-default hidden-print">
+                <div class="panel-heading">
+                    <strong>Enter Your Information</strong>
+                </div>
                 <div class="panel-body">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new {@class = "input", @placeholder = "Supporter Id"})
+                            @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new { @class = "input", @placeholder = "Supporter Id" })
                         </div>
                     </div>
 
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.TextBoxFor(m => m.SearchEntity.Zipcode, new {@placeholder = "Zipcode"})
+                            @Html.TextBoxFor(m => m.SearchEntity.Zipcode, new { @placeholder = "Zipcode" })
                         </div>
                     </div>
 
@@ -80,7 +106,7 @@
             <!-- END SEARCH AREA -->
 
             <!-- BEGIN VALIDATION ERROR -->
-            <div class="row">
+            <div class="row hidden-print">
                 <div class="col-xs-12">
                     @if (!Model.IsValid)
                     {
@@ -101,22 +127,24 @@
             {
                 <div class="row well well-sm">
                     <div class="form-group">
-                        <span class="lead">@Model.Entity.Name</span>
-                        <address class="pull-right">
-                            @Model.Entity.Street <br />
-                            @Model.Entity.Street2 <br />
-                            @($"{@Model.Entity.City}, {@Model.Entity.State} {@Model.Entity.Zipcode}") <br />
-                        </address>
+                        <div class="lead col-sm-8 col-xs-12">@Model.Entity.Name</div>
+                        <div>
+                            <address class="pull-right col-sm-4 col-xs-12">
+                                @Model.Entity.Street <br />
+                                @Model.Entity.Street2 <br />
+                                @($"{@Model.Entity.City}, {@Model.Entity.State} {@Model.Entity.Zipcode}") <br />
+                            </address>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row hidden-print">
                     <div class="col-sm-4">
                         <div class="form-group">
                             @Html.DropDownListFor(model => model.SelectedTaxYear, Enumerable.Range(2010, DateTime.Now.Year - 2010).Select(x => new SelectListItem { Text = x.ToString() }), "Tax Year", new { @class = "form-control select" })
                         </div>
                     </div>
                     <div class="col-sm-4 form-group">
-                        <button id="btnSearch" 
+                        <button id="btnSearch"
                                 class="btn btn-primary"
                                 data-tax-action="search">
                             <i class="fa fa-filter"></i>
@@ -148,16 +176,16 @@
                                 <tr>
                                     <td>@item.TaxYear</td>
                                     <td>@($"{@item.DonationDate:MM/dd/yyyy}")</td>
-                                    <td>@item.Amount</td>
+                                    <td>@($"{@item.Amount:c}")</td>
                                 </tr>
                             }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td></td>
-                                <td class="text-right">Total</td>
+
+                                <td colspan="2" id="totalTitleCell" class="text-right">Total</td>
                                 <td>
-                                    @Model.TotalTax
+                                    @($"{@Model.TotalTax:c}")
                                 </td>
                             </tr>
                         </tfoot>
@@ -169,8 +197,12 @@
 
         }
     </section>
+    <footer class="visible-print">
+        <span>
+            @Model.Template.FooterText
+        </span>
+    </footer>
 </div>
-
 
 
 @section scripts {

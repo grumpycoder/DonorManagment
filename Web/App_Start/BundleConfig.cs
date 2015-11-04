@@ -25,8 +25,7 @@ namespace Web
                    .Include("~/content/bootstrap.css")
                    .Include("~/content/font-awesome.css")
                    .Include("~/content/splcenter-base.css")
-                   .Include("~/content/splcenter.css")
-                   .Include("~/content/tax-print.css"));
+                   .Include("~/content/splcenter.css"));
             //                   .Include("~/content/bootstrap.css")
 
             bundles.Add(new ScriptBundle("~/scripts/splcenter.js")
