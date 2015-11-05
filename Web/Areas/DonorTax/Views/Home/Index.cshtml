@@ -217,6 +217,11 @@
                 $("form").submit();
             });
 
+            $("#showPrint").on('click', function(e) {
+                e.preventDefault();
+                window.print();
+            });
+
         });
     </script>
 
