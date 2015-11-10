@@ -25,12 +25,12 @@
             <div class="panel-body">
                 <uib-accordion close-others="true">
                     <uib-accordion-group heading="Header" is-open="true" ng-class="{'panel-warning': frm.headerText.$dirty}">
-                        <textarea name="headerText" ng-model="vm.template.headerText" markdownedit ></textarea>
+                        <textarea name="headerText" ng-model="vm.template.headerText" markdownedit></textarea>
                     </uib-accordion-group>
                     <uib-accordion-group heading="Body" ng-class="{'panel-warning': frm.bodyText.$dirty}">
                         <textarea name="bodyText" ng-model="vm.template.bodyText" markdownedit markdown-hidden-buttons="cmdQuote">{{vm.template.bodyText}}</textarea>
                     </uib-accordion-group>
-                    <uib-accordion-group heading="FAQ"ng-class="{'panel-warning': frm.faqText.$dirty}">
+                    <uib-accordion-group heading="FAQ" ng-class="{'panel-warning': frm.faqText.$dirty}">
                         <textarea name="faqText" ng-model="vm.template.faqText" markdownedit markdown-hidden-buttons="cmdQuote">{{vm.template.faqText}}</textarea>
                     </uib-accordion-group>
                     <uib-accordion-group heading="Footer" ng-class="{'panel-warning': frm.footerText.$dirty}">
@@ -52,23 +52,49 @@
                 </div>
                 <div class="panel-body">
                     <markdown bind-from="vm.template.headerText"></markdown>
+
+
+
                     <markdown bind-from="vm.template.bodyText"></markdown>
 
-                    
-                        <div class="row well well-sm">
-                            <div class="form-group">
-                                <div class="lead col-sm-8 col-xs-12">Heather Bossin</div>
-                                <div>
-                                    <address class="pull-right col-sm-4 col-xs-12">
-                                        26300 Village Ln <br>
-                                        Apt 9 <br>
-                                        Beachwood, OH 44122-7545 <br>
-                                    </address>
-                                </div>
+
+                    <div class="row well well-sm">
+                        <div class="form-group">
+                            <div class="lead col-sm-8 col-xs-12">Heather Bossin</div>
+                            <div>
+                                <address class="pull-right col-sm-4 col-xs-12">
+                                    26300 Village Ln <br>
+                                    Apt 9 <br>
+                                    Beachwood, OH 44122-7545 <br>
+                                </address>
                             </div>
                         </div>
-                    
+                    </div>
+
                     <div class="well well-sm">
+                        <div class="row hidden-print">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <select class="form-control select" disabled="true" data-val="true" data-val-number="The field SelectedTaxYear must be a number." data-val-required="The SelectedTaxYear field is required." id="SelectedTaxYear" name="SelectedTaxYear">
+                                        <option value="">Tax Year</option>
+                                        <option>2010</option>
+                                        <option>2011</option>
+                                        <option>2012</option>
+                                        <option>2013</option>
+                                        <option selected="selected">2014</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <button id="btnSearch" class="btn btn-primary" data-tax-action="search" disabled="">
+                                    <i class="fa fa-filter"></i>
+                                    &nbsp;Filter
+                                </button>
+                                <button class="btn btn-info" id="showPrint" disabled=""><i class="fa fa-print"></i>&nbsp;Print</button>
+                            </div>
+                        </div>
+
+
                         <table class="table table-condensed table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
@@ -101,10 +127,11 @@
                         </table>
                     </div>
                     <markdown bind-from="vm.template.faqText"></markdown>
-                    <markdown bind-from="vm.template.footerText"></markdown>                    
+                    <markdown bind-from="vm.template.footerText"></markdown>
                 </div>
             </div>
-
+            <i>** FAQ is only visible in print version. Displayed here only for preview purposes.</i><br/>
+            <i>** Gray areas are for preview display only and cannot be altered from the template. </i>
         </div>
     </div>
 
