@@ -15,12 +15,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <span>{{vm.template.name}} Template</span>
-                <span class="pull-right">
-                    <button class="btn btn-warning btn-sm" ng-click="undo()">Undo</button>
-                    <button class="btn btn-success btn-sm" ng-click="save()">Save</button>
-                    <span ng-show="frm.$dirty"><i class="fa fa-asterisk"></i></span>
-                </span>
-                <div class="clearfix"></div>
+                <span ng-show="frm.$dirty" class="pull-right"><i class="fa fa-asterisk"></i></span>
             </div>
             <div class="panel-body">
                 <uib-accordion close-others="true">
@@ -38,10 +33,12 @@
                     </uib-accordion-group>
                 </uib-accordion>
             </div>
+            <div class="panel-footer">
+                <button class="btn btn-warning btn-sm" ng-disabled="frm.$pristine" ng-click="undo()">Cancel</button>
+                <button class="btn btn-success btn-sm" ng-disabled="frm.$pristine" ng-click="save()">Save</button>
+            </div>
         </div>
     </form>
-
-
 
     <div class="row">
 
@@ -52,11 +49,7 @@
                 </div>
                 <div class="panel-body">
                     <markdown bind-from="vm.template.headerText"></markdown>
-
-
-
                     <markdown bind-from="vm.template.bodyText"></markdown>
-
 
                     <div class="row well well-sm">
                         <div class="form-group">

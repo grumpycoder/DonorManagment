@@ -9,35 +9,33 @@
 
     function mainCtrl($scope, $http) {
 
+        var vmCopy = {};
         $scope.title = 'Tax Manager';
         $scope.changed = false;
         $scope.undo = undo;
         $scope.save = save;
-
+        
         activate();
 
         function activate() {
-            console.log('activate');
-
             $http.get('/api/taxmanager/template').success(function (response) {
-                console.log(response);
                 $scope.vm = response;
+                vmCopy = angular.copy($scope.vm);
             }).error(function (response) {
                 console.log(response);
             });
         }
 
         function undo() {
-            console.log('undo');
             $scope.frm.$setPristine();
+            $scope.vm = angular.copy(vmCopy);
         }
 
         function save() {
-            console.log('save');
             $scope.vm.eventCommand = 'save';
             $http.post('/api/taxmanager/template', $scope.vm).success(function (response) {
-                console.log(response);
                 $scope.vm = response;
+                vmCopy = angular.copy($scope.vm);
                 $scope.frm.$setPristine();
             }).error(function (err) {
                 console.log(err);
