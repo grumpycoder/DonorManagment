@@ -1,6 +1,10 @@
-﻿/*[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
-}*/
+}
+
+pre {
+    display: none;
+}
 
 html, body, #wrapper{
 	height: 100%;
@@ -8,6 +12,21 @@ html, body, #wrapper{
 
 body {
 	margin-top: 0;
+}
+
+.btn {
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+
+.panel {
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+
+.panel-heading {
+    -ms-border-radius: 0;
+    border-radius: 0;
 }
 
 #page-wrapper {

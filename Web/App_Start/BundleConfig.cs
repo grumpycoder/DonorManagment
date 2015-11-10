@@ -14,19 +14,12 @@ namespace Web
                    .Include("~/content/bootstrap.css")
                    .Include("~/content/sb-admin.css")
                    .Include("~/content/layout.css"));
-            ;
-            //                .Include("~/content/ui-bootstrap-csp.css")
-            //                .Include("~/content/toastr.css")
-            //                .Include("~/content/ng-tags-input.css")
-            //                .Include("~/content/bootstrap-toggle.css")
-            //                .Include("~/content/ng-tags-input.bootstrap.css")
 
             bundles.Add(new StyleBundle("~/css/splcenter.css")
                    .Include("~/content/bootstrap.css")
                    .Include("~/content/font-awesome.css")
                    .Include("~/content/splcenter-base.css")
                    .Include("~/content/splcenter.css"));
-            //                   .Include("~/content/bootstrap.css")
 
             bundles.Add(new ScriptBundle("~/scripts/splcenter.js")
                    .Include("~/scripts/jquery-{version}.js")
@@ -37,6 +30,20 @@ namespace Web
             bundles.Add(new ScriptBundle("~/scripts/all.js")
                 .Include("~/scripts/jquery-{version}.js")
                 .Include("~/scripts/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/scripts/angular")
+                   .Include("~/scripts/angular.js",
+                            "~/scripts/angular-ui/ui-bootstrap-tpls.js",
+                            "~/scripts/codemwnci/Markdown.Converter.js",
+                            "~/scripts/codemwnci/Markdown.Sanitizer.js",
+                            "~/scripts/codemwnci/bootstrap-markdown.js",
+                            "~/scripts/codemwnci/markdown-editpreview-ng.js"));
+
+
+            bundles.Add(new ScriptBundle("~/scripts/taxmanager")
+                   .Include("~/app/taxmanager/taxmanager.app.js")
+                   .IncludeDirectory("~/app/taxmanager/", "*.js", true));
+
             //                .Include("~/scripts/bootstrap-toggle.js")
             //                .Include("~/scripts/toastr.js")
             //                .Include("~/scripts/moment.js")

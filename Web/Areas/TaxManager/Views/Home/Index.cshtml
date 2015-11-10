@@ -3,5 +3,120 @@
     ViewBag.Title = "Tax Manager";
 }
 
-<h2>Tax Manager Home</h2>
 
+<link href="~/Scripts/codemwnci/bootstrap-markdown.min.css" rel="stylesheet" />
+
+<div ng-app="TaxManagerApp" ng-controller="MainCtrl as vm" ng-cloak>
+
+    <h2>{{vm.title}}</h2>
+
+
+    <form name="frm" novalidate="">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <span>{{vm.template.name}} Template</span>
+                <span class="pull-right">
+                    <button class="btn btn-warning btn-sm" ng-click="undo()">Undo</button>
+                    <button class="btn btn-success btn-sm" ng-click="save()">Save</button>
+                    <span ng-show="frm.$dirty"><i class="fa fa-asterisk"></i></span>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <uib-accordion close-others="true">
+                    <uib-accordion-group heading="Header" is-open="true" ng-class="{'panel-warning': frm.headerText.$dirty}">
+                        <textarea name="headerText" ng-model="vm.template.headerText" markdownedit ></textarea>
+                    </uib-accordion-group>
+                    <uib-accordion-group heading="Body" ng-class="{'panel-warning': frm.bodyText.$dirty}">
+                        <textarea name="bodyText" ng-model="vm.template.bodyText" markdownedit markdown-hidden-buttons="cmdQuote">{{vm.template.bodyText}}</textarea>
+                    </uib-accordion-group>
+                    <uib-accordion-group heading="FAQ"ng-class="{'panel-warning': frm.faqText.$dirty}">
+                        <textarea name="faqText" ng-model="vm.template.faqText" markdownedit markdown-hidden-buttons="cmdQuote">{{vm.template.faqText}}</textarea>
+                    </uib-accordion-group>
+                    <uib-accordion-group heading="Footer" ng-class="{'panel-warning': frm.footerText.$dirty}">
+                        <textarea name="footerText" ng-model="vm.template.footerText" markdownedit markdown-hidden-buttons="cmdQuote">{{vm.template.footerText}}</textarea>
+                    </uib-accordion-group>
+                </uib-accordion>
+            </div>
+        </div>
+    </form>
+
+
+
+    <div class="row">
+
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Preview
+                </div>
+                <div class="panel-body">
+                    <markdown bind-from="vm.template.headerText"></markdown>
+                    <markdown bind-from="vm.template.bodyText"></markdown>
+
+                    
+                        <div class="row well well-sm">
+                            <div class="form-group">
+                                <div class="lead col-sm-8 col-xs-12">Heather Bossin</div>
+                                <div>
+                                    <address class="pull-right col-sm-4 col-xs-12">
+                                        26300 Village Ln <br>
+                                        Apt 9 <br>
+                                        Beachwood, OH 44122-7545 <br>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    <div class="well well-sm">
+                        <table class="table table-condensed table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tax Year</th>
+                                    <th>Donation Date</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2014</td>
+                                    <td>02/03/2014</td>
+                                    <td>$25.00</td>
+                                </tr>
+                                <tr>
+                                    <td>2014</td>
+                                    <td>12/12/2014</td>
+                                    <td>$100.00</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+
+                                    <td colspan="2" id="totalTitleCell" class="text-right">Total</td>
+                                    <td>
+                                        $125.00
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <markdown bind-from="vm.template.faqText"></markdown>
+                    <markdown bind-from="vm.template.footerText"></markdown>                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <pre>
+        {{frm.headerText}}
+    </pre>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/scripts/angular")
+    @Scripts.Render("~/scripts/taxmanager")
+
+}

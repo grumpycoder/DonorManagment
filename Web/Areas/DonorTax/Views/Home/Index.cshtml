@@ -1,10 +1,10 @@
-﻿@model Web.Areas.DonorTax.Models.TaxViewModel
+﻿@using Web.Utilities
+@model Web.Areas.DonorTax.Models.TaxViewModel
 @{
     ViewBag.Title = "Tax Receipts";
 }
 @section css {
     <link rel="stylesheet" type="text/css" href="//cloud.typography.com/71500/671746/css/fonts.css" />
-    @*    <link href="@Url.Content("~/content/tax-receipt.css")" rel="stylesheet" media="screen" />*@
     <link href="@Url.Content("~/Content/tax-print.css")" rel="stylesheet" media="print" />
 }
 
@@ -58,10 +58,13 @@
 
 
 <div class="container form">
-    <h2 class="hidden-print">@Model.Template.HeaderText</h2>
+    <div class="hidden-print">
+        @Html.Markdown(Model.Template.HeaderText)
+    </div>
+
     <section class="hidden-print">
         <p>
-            @Model.Template.BodyText
+            @Html.Markdown(@Model.Template.BodyText)
         </p>
     </section>
     <section>
@@ -79,13 +82,13 @@
                 <div class="panel-body">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new { @class = "input", @placeholder = "Supporter Id" })
+                            @Html.TextBoxFor(m => m.SearchEntity.ConstituentId, new {@class = "input", @placeholder = "Supporter Id"})
                         </div>
                     </div>
 
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.TextBoxFor(m => m.SearchEntity.Zipcode, new { @placeholder = "Zipcode" })
+                            @Html.TextBoxFor(m => m.SearchEntity.Zipcode, new {@placeholder = "Zipcode"})
                         </div>
                     </div>
 
@@ -130,9 +133,9 @@
                         <div class="lead col-sm-8 col-xs-12">@Model.Entity.Name</div>
                         <div>
                             <address class="pull-right col-sm-4 col-xs-12">
-                                @Model.Entity.Street <br />
-                                @Model.Entity.Street2 <br />
-                                @($"{@Model.Entity.City}, {@Model.Entity.State} {@Model.Entity.Zipcode}") <br />
+                                @Model.Entity.Street <br/>
+                                @Model.Entity.Street2 <br/>
+                                @($"{@Model.Entity.City}, {@Model.Entity.State} {@Model.Entity.Zipcode}") <br/>
                             </address>
                         </div>
                     </div>
@@ -140,7 +143,7 @@
                 <div class="row hidden-print">
                     <div class="col-sm-4">
                         <div class="form-group">
-                            @Html.DropDownListFor(model => model.SelectedTaxYear, Enumerable.Range(2010, DateTime.Now.Year - 2010).Select(x => new SelectListItem { Text = x.ToString() }), "Tax Year", new { @class = "form-control select" })
+                            @Html.DropDownListFor(model => model.SelectedTaxYear, Enumerable.Range(2010, DateTime.Now.Year - 2010).Select(x => new SelectListItem {Text = x.ToString()}), "Tax Year", new {@class = "form-control select"})
                         </div>
                     </div>
                     <div class="col-sm-4 form-group">
@@ -164,30 +167,30 @@
                 {
                     <table class="table table-condensed table-bordered table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th>Tax Year</th>
-                                <th>Donation Date</th>
-                                <th>Amount</th>
-                            </tr>
+                        <tr>
+                            <th>Tax Year</th>
+                            <th>Donation Date</th>
+                            <th>Amount</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.TaxItems)
+                        @foreach (var item in Model.TaxItems)
                         {
-                                <tr>
-                                    <td>@item.TaxYear</td>
-                                    <td>@($"{@item.DonationDate:MM/dd/yyyy}")</td>
-                                    <td>@($"{@item.Amount:c}")</td>
-                                </tr>
-                            }
+                            <tr>
+                                <td>@item.TaxYear</td>
+                                <td>@($"{@item.DonationDate:MM/dd/yyyy}")</td>
+                                <td>@($"{@item.Amount:c}")</td>
+                            </tr>
+                        }
                         </tbody>
                         <tfoot>
-                            <tr>
+                        <tr>
 
-                                <td colspan="2" id="totalTitleCell" class="text-right">Total</td>
-                                <td>
-                                    @($"{@Model.TotalTax:c}")
-                                </td>
-                            </tr>
+                            <td colspan="2" id="totalTitleCell" class="text-right">Total</td>
+                            <td>
+                                @($"{@Model.TotalTax:c}")
+                            </td>
+                        </tr>
                         </tfoot>
                     </table>
                 }
@@ -199,7 +202,7 @@
     </section>
     <footer class="visible-print">
         <span>
-            @Model.Template.FooterText
+            @Html.Markdown(Model.Template.FAQText)
         </span>
     </footer>
 </div>
