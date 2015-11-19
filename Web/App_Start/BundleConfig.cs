@@ -8,6 +8,21 @@ namespace Web
         public static void RegisterBundles(BundleCollection bundles)
         {
 
+            bundles.Add(new ScriptBundle("~/scripts/all").Include(
+                   "~/js/plugins/jQuery/jQuery-2.1.4.min.js",
+                   "~/css/bootstrap/js/bootstrap.js",
+                   "~/js/plugins/fastclick/fastclick.js",
+                   "~/js/app.js",
+                   "~/js/plugins/slimScroll/jquery.slimscroll.js"));
+
+
+            bundles.Add(new StyleBundle("~/css/all").Include(
+                      "~/css/bootstrap/css/bootstrap.css",
+                      "~/css/font-awesome.css",
+                      "~/css/ionicons.css",
+                      "~/css/AdminLTE.css",
+                      "~/css/skins/skin-green.css"));
+
 
             bundles.Add(new StyleBundle("~/css/all.css")
                    .Include("~/content/font-awesome.css")
@@ -41,8 +56,8 @@ namespace Web
 
 
             bundles.Add(new ScriptBundle("~/scripts/taxmanager")
-                   .Include("~/app/taxmanager/taxmanager.app.js")
-                   .IncludeDirectory("~/app/taxmanager/", "*.js", true));
+                   .Include("~/js/apps/taxmanager/taxmanager.app.js")
+                   .IncludeDirectory("~/js/apps/taxmanager/", "*.js", true));
 
             //                .Include("~/scripts/bootstrap-toggle.js")
             //                .Include("~/scripts/toastr.js")
