@@ -6,7 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using Domain;
 
-namespace Web.Controllers
+namespace Web.Areas.TaxManager.Controllers
 {
     [System.Web.Http.RoutePrefix("api/taxmanager")]
     public class TaxManagerController : ApiController
@@ -91,6 +91,7 @@ namespace Web.Controllers
 
     public class TemplateManager
     {
+
 
         public TemplateManager()
         {

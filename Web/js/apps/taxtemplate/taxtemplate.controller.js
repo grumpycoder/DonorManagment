@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var controllerId = "MainCtrl";
+    var controllerId = "TaxTemplateCtrl";
 
     function mainCtrl($scope, $http) {
 

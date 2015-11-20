@@ -24,6 +24,20 @@ namespace Web
                       "~/css/skins/skin-green.css"));
 
 
+            bundles.Add(new ScriptBundle("~/scripts/angular")
+             .Include("~/scripts/angular.js",
+                      "~/scripts/angular-ui/ui-bootstrap-tpls.js",
+                      "~/scripts/codemwnci/Markdown.Converter.js",
+                      "~/scripts/codemwnci/Markdown.Sanitizer.js",
+                      "~/scripts/codemwnci/bootstrap-markdown.js",
+                      "~/scripts/codemwnci/markdown-editpreview-ng.js"));
+
+
+            bundles.Add(new ScriptBundle("~/scripts/taxtemplate")
+                   .IncludeDirectory("~/js/apps/taxtemplate/", "*.js", true));
+
+
+
             bundles.Add(new StyleBundle("~/css/all.css")
                    .Include("~/content/font-awesome.css")
                    .Include("~/content/bootstrap.css")
@@ -46,18 +60,9 @@ namespace Web
                 .Include("~/scripts/jquery-{version}.js")
                 .Include("~/scripts/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/scripts/angular")
-                   .Include("~/scripts/angular.js",
-                            "~/scripts/angular-ui/ui-bootstrap-tpls.js",
-                            "~/scripts/codemwnci/Markdown.Converter.js",
-                            "~/scripts/codemwnci/Markdown.Sanitizer.js",
-                            "~/scripts/codemwnci/bootstrap-markdown.js",
-                            "~/scripts/codemwnci/markdown-editpreview-ng.js"));
 
 
-            bundles.Add(new ScriptBundle("~/scripts/taxmanager")
-                   .Include("~/js/apps/taxmanager/taxmanager.app.js")
-                   .IncludeDirectory("~/js/apps/taxmanager/", "*.js", true));
+
 
             //                .Include("~/scripts/bootstrap-toggle.js")
             //                .Include("~/scripts/toastr.js")

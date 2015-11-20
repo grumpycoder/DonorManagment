@@ -1,23 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace Web.Areas.TaxManager.Controllers
+namespace Web.Controllers
 {
-
-    public class HomeController : Controller
+    public class TaxController : Controller
     {
         public ActionResult Index()
         {
             return View();
         }
 
-        [System.Web.Http.Route("template")]
         public ActionResult Template()
         {
             return View();
         }
 
+        public ActionResult DataManager()
+        {
+            return View();
+        }
     }
-
-
-
 }

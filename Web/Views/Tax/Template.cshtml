@@ -2,12 +2,8 @@
     ViewBag.Title = "Tax Manager";
 }
 
-<link href="~/Scripts/codemwnci/bootstrap-markdown.min.css" rel="stylesheet" />
 
-
-
-
-<div ng-app="TaxManagerApp" ng-controller="MainCtrl as vm">
+<div ng-app="TaxTemplateApp" ng-controller="TaxTemplateCtrl as vm">
 
     <section class="content-header">
         <h1>
@@ -241,8 +237,11 @@
 </div>
 
 @section scripts
-{
+    {
+    <link href="~/Scripts/codemwnci/bootstrap-markdown.min.css" rel="stylesheet" />
     @Scripts.Render("~/scripts/angular")
-    @Scripts.Render("~/scripts/taxmanager")
+    @Scripts.Render("~/scripts/taxtemplate")
 
 }
+
+

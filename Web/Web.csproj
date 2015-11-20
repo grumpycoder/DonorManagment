@@ -157,22 +157,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\Dashboard\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Dashboard\DashboardAreaRegistration.cs" />
-    <Compile Include="Areas\DonorTax\Controllers\HomeController.cs" />
-    <Compile Include="Areas\DonorTax\DonorTaxAreaRegistration.cs" />
-    <Compile Include="Areas\DonorTax\Models\TaxViewModel.cs" />
-    <Compile Include="Areas\EventManager\Controllers\HomeController.cs" />
-    <Compile Include="Areas\EventManager\EventManagerAreaRegistration.cs" />
-    <Compile Include="Areas\MarkIt\Controllers\HomeController.cs" />
-    <Compile Include="Areas\MarkIt\MarkItAreaRegistration.cs" />
-    <Compile Include="Areas\Reservation\ReservationAreaRegistration.cs" />
-    <Compile Include="Areas\TaxManager\Controllers\HomeController.cs" />
-    <Compile Include="Areas\TaxManager\Controllers\TaxManagerController.cs" />
-    <Compile Include="Areas\TaxManager\TaxManagerAreaRegistration.cs" />
+    <Compile Include="Controllers\api\TaxManagerController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\web\HomeController.cs" />
+    <Compile Include="Controllers\web\ProfileController.cs" />
+    <Compile Include="Controllers\web\TaxManagerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,8 +169,8 @@
     <Compile Include="Utilities\HtmlUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\apps\taxmanager\main.controller.js" />
-    <Content Include="js\apps\taxmanager\taxmanager.app.js" />
+    <Content Include="js\apps\taxtemplate\TaxTemplate.Controller.js" />
+    <Content Include="js\apps\taxtemplate\TaxTemplate.app.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -239,29 +228,12 @@
     <Content Include="fonts\ionicons.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Areas\Dashboard\Views\web.config" />
-    <Content Include="Areas\MarkIt\Views\web.config" />
-    <Content Include="Areas\Reservation\Views\web.config" />
-    <Content Include="Areas\TaxManager\Views\web.config" />
-    <Content Include="Areas\DonorTax\Views\web.config" />
-    <Content Include="Areas\Dashboard\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Dashboard\Views\Home\Index.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Areas\EventManager\Views\web.config" />
-    <Content Include="Areas\MarkIt\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\MarkIt\Views\Home\Index.cshtml" />
-    <Content Include="Areas\EventManager\Views\Home\Index.cshtml" />
-    <Content Include="Areas\EventManager\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\TaxManager\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\TaxManager\Views\Home\Index.cshtml" />
-    <Content Include="Areas\DonorTax\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\DonorTax\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\DonorTax\Views\Home\Index.cshtml" />
     <Content Include="img\avatar.png" />
     <Content Include="img\avatar04.png" />
     <Content Include="img\avatar2.png" />
@@ -300,7 +272,6 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Areas\TaxManager\Views\Home\Template.cshtml" />
     <Content Include="fonts\ionicons.eot" />
     <Content Include="fonts\ionicons.ttf" />
     <Content Include="fonts\ionicons.woff" />
@@ -345,20 +316,12 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Views\Tax\Index.cshtml" />
+    <Content Include="Views\Tax\Template.cshtml" />
+    <Content Include="Views\Tax\DataManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Dashboard\Models\" />
-    <Folder Include="Areas\Dashboard\Views\Shared\" />
-    <Folder Include="Areas\EventManager\Models\" />
-    <Folder Include="Areas\EventManager\Views\Shared\" />
-    <Folder Include="Areas\MarkIt\Models\" />
-    <Folder Include="Areas\MarkIt\Views\Shared\" />
-    <Folder Include="Areas\Reservation\Controllers\" />
-    <Folder Include="Areas\Reservation\Models\" />
-    <Folder Include="Areas\Reservation\Views\Shared\" />
-    <Folder Include="Areas\TaxManager\Models\" />
-    <Folder Include="Areas\TaxManager\Views\Shared\" />
     <Folder Include="img\credit\" />
     <Folder Include="js\plugins\" />
     <Folder Include="Models\" />
