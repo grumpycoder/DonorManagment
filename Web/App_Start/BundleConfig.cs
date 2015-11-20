@@ -35,7 +35,11 @@ namespace Web
 
             bundles.Add(new ScriptBundle("~/scripts/taxtemplate")
                    .IncludeDirectory("~/js/apps/taxtemplate/", "*.js", true));
+            //                   .Include("~/js/apps/taxtemplate/taxtemplate.app.js"));
+            //                   .IncludeDirectory("~/js/apps/taxtemplate/", "*.js", true));
 
+            bundles.Add(new ScriptBundle("~/scripts/taxdatamanager")
+              .IncludeDirectory("~/js/apps/taxdatamanager/", "*.js", true));
 
 
             bundles.Add(new StyleBundle("~/css/all.css")

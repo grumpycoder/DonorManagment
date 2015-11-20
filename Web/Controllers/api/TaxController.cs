@@ -6,10 +6,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using Domain;
 
-namespace Web.Areas.TaxManager.Controllers
+namespace Web.Controllers.Api
 {
-    [System.Web.Http.RoutePrefix("api/taxmanager")]
-    public class TaxManagerController : ApiController
+    [System.Web.Http.RoutePrefix("api/tax")]
+    public class TaxController : ApiController
     {
 
         [System.Web.Http.Route("template")]

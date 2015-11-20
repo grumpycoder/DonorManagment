@@ -5,21 +5,20 @@
 (function () {
     'use strict';
 
-    var controllerId = "TaxTemplateCtrl";
+    window.TaxTemplate.controller('TemplateCtrl', ['$scope', '$http', mainCtrl]);
 
     function mainCtrl($scope, $http) {
-
         var vmCopy = {};
         $scope.title = 'Tax Template';
         $scope.description = 'Update Donor Tax page template';
         $scope.changed = false;
         $scope.undo = undo;
         $scope.save = save;
-        
+
         activate();
 
         function activate() {
-            $http.get('/api/taxmanager/template').success(function (response) {
+            $http.get('/api/tax/template').success(function (response) {
                 $scope.vm = response;
                 vmCopy = angular.copy($scope.vm);
             }).error(function (response) {
@@ -34,7 +33,7 @@
 
         function save() {
             $scope.vm.eventCommand = 'save';
-            $http.post('/api/taxmanager/template', $scope.vm).success(function (response) {
+            $http.post('/api/tax/template', $scope.vm).success(function (response) {
                 $scope.vm = response;
                 vmCopy = angular.copy($scope.vm);
                 $scope.frm.$setPristine();
@@ -42,10 +41,8 @@
                 console.log(err);
             });
         }
-
     }
 
-    window.app.controller(controllerId, ['$scope', '$http', mainCtrl]);
 
 
 })();
