@@ -124,7 +124,6 @@ namespace Web.Controllers.Api
             using (var csv = new CsvReader(new StreamReader(filePath)))
             {
 
-                //                var csv = new CsvReader(new StreamReader(filePath));
                 csv.Configuration.WillThrowOnMissingField = false;
                 csv.Configuration.RegisterClassMap<CsvMap>();
 
@@ -133,20 +132,18 @@ namespace Web.Controllers.Api
                 var constituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
                 var map = new Hashtable();
 
-
-                var missinglist = csvConstituents.Except(constituents, new ConstituentComparer()).ToList();
-
                 // Add new Constituents
+                var missinglist = csvConstituents.Except(constituents, new ConstituentComparer()).ToList();
                 foreach (var vm in missinglist)
                 {
                     var constituent = Mapper.Map<ConstituentViewModel, Constituent>(vm);
                     db.Constituents.Add(constituent);
                     db.SaveChanges();
-                    map.Add(vm.ConstituentId.Replace("\"", ""), constituent.Id);
+                    map.Add(vm.ConstituentId, constituent.Id);
                 }
 
-                var existingList = csvConstituents.Except(missinglist, new ConstituentComparer());
                 //Update existing Constituents information
+                var existingList = csvConstituents.Except(missinglist, new ConstituentComparer());
                 foreach (var vm in existingList)
                 {
                     ConstituentViewModel cvm = constituents.FirstOrDefault(x => x.ConstituentId == vm.LookupId);
@@ -154,8 +151,7 @@ namespace Web.Controllers.Api
                     {
                         vm.Id = cvm.Id;
                         cvm.CopyPropertiesFrom(vm);
-                        map.Add(vm.ConstituentId.Replace("\"", ""), vm.Id);
-
+                        map.Add(vm.ConstituentId, vm.Id);
                         var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
                         db.Constituents.AddOrUpdate(constituent);
                     }
@@ -186,9 +182,6 @@ namespace Web.Controllers.Api
                 sbc.ColumnMappings.Add("ConstituentId", "ConstituentId");
 
                 await sbc.WriteToServerAsync(dt);
-
-                //                csv.Dispose();
-
             }
 
             status.Success = true;
@@ -217,7 +210,7 @@ namespace Web.Controllers.Api
             Map(m => m.DonationDate).Name("Date");
             Map(m => m.Amount)
                 .Name("Amount")
-                .ConvertUsing(row => Convert.ToDecimal(row.GetField("Amount")));
+                .ConvertUsing(row => Convert.ToDecimal(row.GetField("Amount").Replace("$", "")));
 
         }
     }
