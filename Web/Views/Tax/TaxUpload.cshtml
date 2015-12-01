@@ -1,0 +1,123 @@
+﻿
+
+
+<div ng-app="TaxDataManager" ng-controller="MainCtrl as vm">
+
+    <section class="content-header">
+        <h1>
+            {{title}}
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">Tax Upload</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary">
+            <div class="box-header with-border box-success">
+                <h3 class="box-title">Upload</h3>
+            </div><!-- ./box-header-->
+
+            <form role="form">
+                <div class="box-body">
+                    <div class="form-group">
+                        @*                        <label for="exampleInputFile">Upload Tax File</label>*@
+                        <input type="file" ng-model="vm.file">
+                        <p class="help-block">Choose your data file. Click Additional Notes below for file format information.</p>
+                    </div>
+                </div><!-- ./box-body-->
+
+                <div class="box-footer">
+                    <button class="btn btn-success" ng-click="vm.processFile()" ng-disabled="!vm.file">Load File</button>
+                    @*                    <button class="btn btn-success" ng-click="vm.processFile()" ng-disabled="!vm.file || vm.isProcessing">Load File</button>*@
+                </div><!-- ./box-footer -->
+            </form>
+            <div class="overlay" ng-show="vm.isProcessing">
+                <i class="fa fa-refresh fa-spin"></i>
+            </div>
+
+        </div>
+
+        <div class="box box-solid" ng-class="{ 'box-danger' : !vm.status.success, 'box-success' : vm.status.success }" ng-show="vm.isComplete">
+            <div class="box-header with-border">
+                <h3 class="box-title">Results</h3>
+            </div>
+            <div class="box-body">
+                <dl class="dl-horizontal">
+                    <dt>File name</dt>
+                    <dd>{{vm.status.fileName}}</dd>
+
+                    <dt>File size</dt>
+                    <dd>{{vm.status.fileSize}} MB</dd>
+
+                    <dt>File record count</dt>
+                    <dd>{{vm.status.recordsInFile}}</dd>
+
+                    <dt>Database record count</dt>
+                    <dd>{{vm.status.recordsLoaded}}</dd>
+
+                    <dt>Constituents Created</dt>
+                    <dd>{{vm.status.constituentsCreated}}</dd>
+
+                    <dt>Constituents Updated</dt>
+                    <dd>{{vm.status.constituentsUpdated}}</dd>
+
+
+                    <dt>Elapsed time</dt>
+                    <dd>{{vm.status.totalTime}} (hh:mm:ss)</dd>
+
+                    <dt>Message</dt>
+                    <dd>{{vm.status.message}}</dd>
+                </dl>
+            </div>
+        </div>
+
+
+        <button class="btn btn-info" ng-click="vm.notesCollapsed = !vm.notesCollapsed"
+                popover="Click here for additional information"
+                popover-trigger="mouseenter"
+                popover-placement="right">
+            Additional Notes
+        </button>
+        <div collapse="vm.notesCollapsed">
+            <div class="well in">
+                <h4>Helpful tips:</h4>
+                <ul>
+                    <li>Choose your tax data file to upload.</li>
+                    <li>Click the <kbd>Load File</kbd> button to begin processing the file. Depending on the number of records could take some time.</li>
+                </ul>
+
+                <h4>File Formatting:</h4>
+                <p>
+                    File must have header in the following format:<br />
+                <p>
+                    <code>
+                        [LookupID | Lookup ID | LookupId],
+                        Name, Email address, [Addressline1 | Address line 1 | Address Line 1],
+                        [Addressline2 | Address line 2 | Address Line 2], City, State, Date, Amount
+                    </code>
+                </p>
+                <p>
+                    Header field names are case sensitive and must be in the exact case or word spacing specified and
+                    have at minimum the fields indicated. Any additional fields will be ignored.
+                </p>
+                <p>
+                    If you receive error regarding column mappings, make sure you update the file header format to match.
+                </p>
+
+            </div>
+        </div>
+
+    </section>
+
+
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/scripts/angular")
+    @Scripts.Render("~/scripts/taxdatamanager")
+}
+
+

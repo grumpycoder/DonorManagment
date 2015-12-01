@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CsvHelper;
+using Domain;
+using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using AutoMapper;
-using CsvHelper;
-using Domain;
-using Microsoft.Ajax.Utilities;
+using Web.Infrastructure;
 using Web.Infrastructure.Mapping;
 using Web.Models;
-using AutoMapper.QueryableExtensions;
-using CsvHelper.Configuration;
-using CsvHelper.TypeConversion;
 using Web.Utilities;
 
 namespace Web.Controllers.Api
@@ -94,6 +90,8 @@ namespace Web.Controllers.Api
             status.FileName = postedFile.FileName;
             status.FileSize = (postedFile.ContentLength / 1024f) / 1024f;
             File.Delete(filePath);
+
+            status.Success = true;
             status.Message = "Successfully processed file";
 
             return Request.CreateResponse(status.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, status);
@@ -121,277 +119,95 @@ namespace Web.Controllers.Api
                 return status;
             }
 
-            using (var csv = new CsvReader(new StreamReader(filePath)))
+            using (var csv = new CsvReader(new StreamReader(filePath, Encoding.Default, true)))
             {
 
                 csv.Configuration.WillThrowOnMissingField = false;
                 csv.Configuration.RegisterClassMap<CsvMap>();
 
-                var records = csv.GetRecords<CsvTaxRecordViewModel>().ToList();
-                var csvConstituents = records.DistinctBy(m => m.LookupId).AsQueryable().ProjectTo<ConstituentViewModel>().ToList();
-                var constituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
-                var map = new Hashtable();
+                var csvTaxRecords = csv.GetRecords<CsvTaxRecordViewModel>().ToList();
+                var csvConstituents = csvTaxRecords.DistinctBy(m => m.LookupId).AsQueryable().ProjectTo<ConstituentViewModel>().ToList();
+                var dbConstituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
 
-                // Add new Constituents
-                var missinglist = csvConstituents.Except(constituents, new ConstituentComparer()).ToList();
-                foreach (var vm in missinglist)
+                var newConstituentList = csvConstituents.Except(dbConstituents, new ConstituentIdComparer()).ToList();
+                var existingConstituentList = csvConstituents.Except(newConstituentList, new ConstituentIdComparer());
+                var constituentChangeList = existingConstituentList.Except(dbConstituents, new ConstituentComparer());
+
+
+                // Update existing constituents that differ from database
+                foreach (var vm in constituentChangeList)
                 {
-                    var constituent = Mapper.Map<ConstituentViewModel, Constituent>(vm);
-                    db.Constituents.Add(constituent);
-                    db.SaveChanges();
-                    map.Add(vm.ConstituentId, constituent.Id);
+                    ConstituentViewModel cvm = dbConstituents.FirstOrDefault(x => x.LookupId == vm.LookupId);
+                    vm.Id = cvm.Id;
+                    cvm.CopyPropertiesFrom(vm);
+                    var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
+                    db.Constituents.AddOrUpdate(constituent);
                 }
+                status.ConstituentsUpdated = db.SaveChanges();
 
-                //Update existing Constituents information
-                var existingList = csvConstituents.Except(missinglist, new ConstituentComparer());
-                foreach (var vm in existingList)
+
+                // Add new Constituents missing from database
+                // Bulk copy new Constituent records
+                if (newConstituentList.Count > 0)
                 {
-                    ConstituentViewModel cvm = constituents.FirstOrDefault(x => x.ConstituentId == vm.LookupId);
-                    if (!vm.Equals(cvm))
+                    var missingTbl = newConstituentList.ToDataTable();
+                    using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
                     {
-                        vm.Id = cvm.Id;
-                        cvm.CopyPropertiesFrom(vm);
-                        map.Add(vm.ConstituentId, vm.Id);
-                        var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
-                        db.Constituents.AddOrUpdate(constituent);
+                        sbc.DestinationTableName = "dbo.Constituents";
+                        sbc.BatchSize = 10000;
+                        sbc.BulkCopyTimeout = 0;
+
+                        sbc.ColumnMappings.Add("LookupId", "LookupId");
+                        sbc.ColumnMappings.Add("Name", "Name");
+                        sbc.ColumnMappings.Add("Street", "Street");
+                        sbc.ColumnMappings.Add("Street2", "Street2");
+                        sbc.ColumnMappings.Add("City", "City");
+                        sbc.ColumnMappings.Add("State", "State");
+                        sbc.ColumnMappings.Add("Zipcode", "Zipcode");
+                        sbc.ColumnMappings.Add("Email", "Email");
+                        sbc.ColumnMappings.Add("Phone", "Phone");
+                        await sbc.WriteToServerAsync(missingTbl);
                     }
-
                 }
-                db.SaveChanges();
+                status.ConstituentsCreated = newConstituentList.Count;
 
-                // Remap constituentId to parent table key
-                foreach (var vm in records)
+                // Build dictionary to map database key to csv records LookupId
+                var dic = new Dictionary<int, string>();
+                dbConstituents.ForEach(x => dic.Add(x.Id, x.LookupId));
+
+                // Update parent key for each tax record
+                csvTaxRecords.ForEach(x => x.ConstituentId = dic.FirstOrDefault(d => d.Value == x.LookupId).Key);
+
+                // Bulk insert new tax records
+                using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
                 {
-                    vm.ConstituentId = (int)map[vm.LookupId];
+                    sbc.DestinationTableName = "dbo.TaxItems";
+                    sbc.BatchSize = 10000;
+                    sbc.BulkCopyTimeout = 0;
+
+                    sbc.ColumnMappings.Add("TaxYear", "TaxYear");
+                    sbc.ColumnMappings.Add("DonationDate", "DonationDate");
+                    sbc.ColumnMappings.Add("Amount", "Amount");
+                    sbc.ColumnMappings.Add("ConstituentId", "ConstituentId");
+
+                    var dt = csvTaxRecords.ToDataTable();
+
+                    await sbc.WriteToServerAsync(dt);
                 }
 
-                var dt = records.ToDataTable();
-
-                var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString)
+                status.RecordsInFile = csvTaxRecords.Count;
+                CsvTaxRecordViewModel csvTaxRecordViewModel = csvTaxRecords.FirstOrDefault();
+                if (csvTaxRecordViewModel != null)
                 {
-                    //HACK: Magic string to define dest table
-                    DestinationTableName = "dbo.TaxItems",
-                    BatchSize = 10000,
-                    BulkCopyTimeout = 0
-                };
-                //
-
-                sbc.ColumnMappings.Add("TaxYear", "TaxYear");
-                sbc.ColumnMappings.Add("DonationDate", "DonationDate");
-                sbc.ColumnMappings.Add("Amount", "Amount");
-                sbc.ColumnMappings.Add("ConstituentId", "ConstituentId");
-
-                await sbc.WriteToServerAsync(dt);
+                    var taxYear = csvTaxRecordViewModel.TaxYear;
+                    status.RecordsLoaded = db.TaxItems.Count(t => t.TaxYear == taxYear);
+                }
             }
 
             status.Success = true;
-            status.TotalTime = DateTime.Now.Subtract(startTime).ToString();
+            status.TotalTime = DateTime.Now.Subtract(startTime).ToString(@"hh\:mm\:ss");
             return status;
         }
 
-
-
-
     }
-
-    public sealed class CsvMap : CsvClassMap<CsvTaxRecordViewModel>
-    {
-        public CsvMap()
-        {
-            Map(m => m.LookupId).Name("LookupID");
-            Map(m => m.Name).Name("Name");
-            Map(m => m.EmailAddress).Name("EmailAddress");
-            Map(m => m.Addressline1).Name("Addressline1", "Address Line 1");
-            Map(m => m.Addressline2).Name("Addressline2", "Address Line 2");
-            Map(m => m.Addressline3).Name("Addressline3", "Address Line 3");
-            Map(m => m.City).Name("City");
-            Map(m => m.State).Name("State");
-            Map(m => m.TaxYear).ConvertUsing(row => row.GetField("Date").ToDateTime().Year);
-            Map(m => m.DonationDate).Name("Date");
-            Map(m => m.Amount)
-                .Name("Amount")
-                .ConvertUsing(row => Convert.ToDecimal(row.GetField("Amount").Replace("$", "")));
-
-        }
-    }
-
-    public class ConstituentComparer : IEqualityComparer<ConstituentViewModel>
-    {
-        public bool Equals(ConstituentViewModel x, ConstituentViewModel y)
-        {
-            return Equals(x.ConstituentId, y.ConstituentId);
-        }
-
-        public int GetHashCode(ConstituentViewModel obj)
-        {
-            return obj.ConstituentId.GetHashCode();
-        }
-    }
-
-    public class ConstituentViewModel : IHaveCustomMappings, IEquatable<ConstituentViewModel>
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string ConstituentId { get; set; }
-        public string Street { get; set; }
-        public string Street2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Zipcode { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-
-        public string LookupId { get; set; }
-
-        public void CreateMappings(IConfiguration config)
-        {
-            config.CreateMap<CsvTaxRecordViewModel, ConstituentViewModel>()
-                .ForMember(m => m.ConstituentId, opt => opt.MapFrom(u => u.LookupId))
-                .ForMember(m => m.Street, opt => opt.MapFrom(u => u.Addressline1))
-                .ForMember(m => m.Street2, opt => opt.MapFrom(u => u.Addressline2))
-                .ReverseMap();
-
-
-            config.CreateMap<Constituent, ConstituentViewModel>()
-                .ForMember(m => m.ConstituentId, opt => opt.MapFrom(u => u.ConstituentId))
-                .ReverseMap();
-
-        }
-
-        public bool Equals(ConstituentViewModel other)
-        {
-            if (other == null) return false;
-
-            if (other.ConstituentId != ConstituentId) return false;
-            if (other.Name != ConstituentId) return false;
-            if (other.Street != Street) return false;
-            if (other.Street2 != Street2) return false;
-            if (other.City != City) return false;
-            if (other.State != State) return false;
-            if (other.Zipcode != Zipcode) return false;
-            if (other.Email != Email) return false;
-            if (other.Phone != Phone) return false;
-
-            return true;
-        }
-    }
-
-    public class CsvTaxRecordViewModel : CsvClassMap<CsvMap>
-    {
-        public string LookupId { get; set; }
-        public int ConstituentId { get; set; }
-        public string Name { get; set; }
-        public string EmailAddress { get; set; }
-        public string Addressline1 { get; set; }
-        public string Addressline2 { get; set; }
-        public string Addressline3 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string DonationDate { get; set; }
-        public decimal Amount { get; set; }
-        public int TaxYear { get; set; }
-    }
-
-    public class TemplateViewModel
-    {
-        private const string TEMPLATE_NAME = "DonorTax";
-
-        public TemplateViewModel()
-        {
-            EventCommand = "Get";
-        }
-
-        public string EventCommand { get; set; }
-        public Template Template { get; set; }
-        public bool IsValid { get; set; }
-        public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
-
-        public void HandleRequest()
-        {
-
-            switch (EventCommand.ToLower())
-            {
-                case "get":
-                    GetTemplate();
-                    break;
-                case "save":
-                    Save();
-                    break;
-            }
-
-        }
-
-        private void Save()
-        {
-            var mgr = new TemplateManager();
-            mgr.Update(Template);
-        }
-
-        private void GetTemplate()
-        {
-            var mgr = new TemplateManager();
-            Template = mgr.Get(TEMPLATE_NAME);
-        }
-
-    }
-
-    public class TemplateManager
-    {
-
-
-        public TemplateManager()
-        {
-            ValidationErrors = new List<KeyValuePair<string, string>>();
-        }
-
-        public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
-
-        public Template Get(string templateName)
-        {
-            using (var db = new AppContext())
-            {
-                return db.Templates.FirstOrDefault(t => t.Name == templateName);
-            }
-        }
-
-        public bool Update(Template template)
-        {
-            bool ret = false;
-
-            ret = Validate(template);
-
-            if (ret)
-            {
-                // TODO: Create UPDATE code here
-                using (var db = new AppContext())
-                {
-                    db.Templates.AddOrUpdate(template);
-                    db.SaveChanges();
-                }
-            }
-
-            return ret;
-        }
-
-        private bool Validate(Template template)
-        {
-            ValidationErrors.Clear();
-
-            if (!string.IsNullOrEmpty(template.HeaderText))
-            {
-                if (template.HeaderText.ToLower() ==
-                    template.HeaderText)
-                {
-                    ValidationErrors.Add(new
-                      KeyValuePair<string, string>("Header Text",
-                      "Header must not be all lower case."));
-                }
-            }
-
-            return (ValidationErrors.Count == 0);
-        }
-    }
-
-
-
 }

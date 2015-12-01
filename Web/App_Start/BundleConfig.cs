@@ -37,7 +37,8 @@ namespace Web
                    .IncludeDirectory("~/js/apps/taxtemplate/", "*.js", true));
 
             bundles.Add(new ScriptBundle("~/scripts/taxdatamanager")
-              .IncludeDirectory("~/js/apps/taxdatamanager/", "*.js", true));
+                   .Include("~/scripts/ng-file-input.js")
+                   .IncludeDirectory("~/js/apps/taxdatamanager/", "*.js", true));
 
 
             bundles.Add(new StyleBundle("~/css/all.css")

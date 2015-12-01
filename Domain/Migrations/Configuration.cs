@@ -32,7 +32,7 @@ namespace Domain.Migrations
             context.Constituents.AddOrUpdate(new Constituent()
             {
                 Name = "Heather Bossin", 
-                ConstituentId = "10782387129", 
+                LookupId = "10782387129", 
                 TaxItems = new List<TaxItem>()
                 {
                     new TaxItem() {TaxYear = 2014, Amount = 25, DonationDate = DateTime.Parse("2/3/2014")},
@@ -43,7 +43,7 @@ namespace Domain.Migrations
             context.Constituents.AddOrUpdate(new Constituent()
             {
                 Name = "Mervin Slobodin",
-                ConstituentId = "10972679863",
+                LookupId = "10972679863",
                 TaxItems = new List<TaxItem>()
                 {
                     new TaxItem() {TaxYear = 2014, Amount = 20, DonationDate = DateTime.Parse("1/24/2014")},
@@ -57,7 +57,7 @@ namespace Domain.Migrations
             context.Constituents.AddOrUpdate(new Constituent()
             {
                 Name = "Eugene Rogers",
-                ConstituentId = "10972692270",
+                LookupId = "10972692270",
                 TaxItems = new List<TaxItem>()
                 {
                     new TaxItem() {TaxYear = 2014, Amount = 14, DonationDate = DateTime.Parse("1/24/2014")},

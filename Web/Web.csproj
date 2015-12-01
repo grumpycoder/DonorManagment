@@ -171,6 +171,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
+    <Compile Include="Services\TemplateManager.cs" />
+    <Compile Include="Models\TemplateViewModel.cs" />
+    <Compile Include="Models\CsvTaxRecordViewModel.cs" />
+    <Compile Include="Models\ConstituentViewModel.cs" />
+    <Compile Include="Infrastructure\Mapping\CsvMap.cs" />
+    <Compile Include="Infrastructure\ConstituentIdComparer.cs" />
+    <Compile Include="Infrastructure\ConstituentComparer.cs" />
     <Compile Include="Infrastructure\Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\Mapping\IMapFrom.cs" />
     <Compile Include="Models\RecordLoadStatus.cs" />
@@ -283,6 +290,7 @@
     <Content Include="js\app.min.js" />
     <Content Include="js\pages\dashboard.js" />
     <Content Include="js\pages\dashboard2.js" />
+    <Content Include="Scripts\angular-file-model.js" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
@@ -314,6 +322,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\ng-file-input.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\splc.js" />
@@ -339,6 +348,7 @@
     <Content Include="Views\Tax\Index.cshtml" />
     <Content Include="Views\Tax\Template.cshtml" />
     <Content Include="Views\Tax\DataManager.cshtml" />
+    <Content Include="Views\Tax\TaxUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

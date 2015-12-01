@@ -20,15 +20,15 @@
 
         <form name="frm" novalidate="">
 
-        <div class="row">
-            <div class="col-md-12">
-                <span ng-show="!frm.$pristine"><i class="fa fa-asterisk text-red"></i></span>
-                <p class="pull-right">
-                    <button class="btn btn-warning btn-flat" ng-disabled="frm.$pristine" ng-click="undo()">Cancel</button>
-                    <button class="btn btn-success btn-flat" ng-disabled="frm.$pristine" ng-click="save()">Save</button>
-                </p>
-            </div>
-        </div><!-- ./row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <span ng-show="!frm.$pristine"><i class="fa fa-asterisk text-red"></i></span>
+                    <p class="pull-right">
+                        <button class="btn btn-warning btn-flat" ng-disabled="frm.$pristine" ng-click="undo()">Cancel</button>
+                        <button class="btn btn-success btn-flat" ng-disabled="frm.$pristine" ng-click="save()">Save</button>
+                    </p>
+                </div>
+            </div><!-- ./row -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -243,7 +243,7 @@
 </div>
 
 @section scripts
-    {
+{
     <link href="~/Scripts/codemwnci/bootstrap-markdown.min.css" rel="stylesheet" />
     @Scripts.Render("~/scripts/angular")
     @Scripts.Render("~/scripts/taxtemplate")

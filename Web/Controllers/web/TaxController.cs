@@ -18,5 +18,10 @@ namespace Web.Controllers.Web
         {
             return View();
         }
+
+        public ActionResult TaxUpload()
+        {
+            return View();
+        }
     }
 }
