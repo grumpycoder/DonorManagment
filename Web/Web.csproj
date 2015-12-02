@@ -171,6 +171,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
+    <Compile Include="Controllers\web\DonorTaxController.cs" />
+    <Compile Include="Models\TaxViewModel.cs" />
     <Compile Include="Services\TemplateManager.cs" />
     <Compile Include="Models\TemplateViewModel.cs" />
     <Compile Include="Models\CsvTaxRecordViewModel.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ExtensionUtility.cs" />
     <Compile Include="Utilities\HtmlUtility.cs" />
+    <Compile Include="Utilities\SqlBulkCopyExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="js\apps\TaxDataManager\DataManager.app.js" />
@@ -349,6 +352,8 @@
     <Content Include="Views\Tax\Template.cshtml" />
     <Content Include="Views\Tax\DataManager.cshtml" />
     <Content Include="Views\Tax\TaxUpload.cshtml" />
+    <Content Include="Views\DonorTax\Index.cshtml" />
+    <Content Include="Views\Shared\_DonorTaxLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

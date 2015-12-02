@@ -14,6 +14,7 @@ namespace Web.Models
         public string Addressline3 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public string Zipcode { get; set; }
         public string DonationDate { get; set; }
         public decimal Amount { get; set; }
         public int TaxYear { get; set; }

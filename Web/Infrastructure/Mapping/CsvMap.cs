@@ -17,6 +17,7 @@ namespace Web.Infrastructure.Mapping
             Map(m => m.Addressline3).Name("Addressline3", "Address Line 3", "Address line 3");
             Map(m => m.City).Name("City");
             Map(m => m.State).Name("State");
+            Map(m => m.Zipcode).Name("Zip", "zip", "ZIP", "Zipcode", "zipcode", "ZipCode");
             Map(m => m.TaxYear).ConvertUsing(row => row.GetField("Date").ToDateTime().Year);
             Map(m => m.DonationDate).Name("Date");
             Map(m => m.Amount)

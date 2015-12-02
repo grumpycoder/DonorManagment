@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Domain;
-using Web.Controllers.Api;
 using Web.Services;
 
 namespace Web.Models

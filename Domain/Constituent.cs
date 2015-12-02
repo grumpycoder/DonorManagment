@@ -18,6 +18,8 @@ namespace Domain
         public string Email { get; set; }
         public string Phone { get; set; }
 
+        public string Zip5 => Zipcode.Substring(0, 5);
+
         public ICollection<TaxItem> TaxItems { get; set; }
     }
 }

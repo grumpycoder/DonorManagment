@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using CsvHelper.Configuration;
 using Web.Infrastructure;
 using Web.Infrastructure.Mapping;
 using Web.Models;
@@ -90,10 +92,6 @@ namespace Web.Controllers.Api
             status.FileName = postedFile.FileName;
             status.FileSize = (postedFile.ContentLength / 1024f) / 1024f;
             File.Delete(filePath);
-
-            status.Success = true;
-            status.Message = "Successfully processed file";
-
             return Request.CreateResponse(status.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, status);
         }
 
@@ -107,105 +105,108 @@ namespace Web.Controllers.Api
                 RecordsLoaded = 0
             };
 
-            if (filePath == null)
+            if (filePath == null || !File.Exists(filePath))
             {
-                status.Message = "No file uploaded";
+                status.Message = "File does not exist or No file was uploaded";
                 return status;
             }
-
-            if (!File.Exists(filePath))
+            
+            var config = new CsvConfiguration()
             {
-                status.Message = "File does not exist";
-                return status;
+                IsHeaderCaseSensitive = false,
+                WillThrowOnMissingField = false,
+                IgnoreReadingExceptions = true,
+                ThrowOnBadData = false, 
+                SkipEmptyRecords = true
+            };
+            var csv = new CsvReader(new StreamReader(filePath, Encoding.Default, true), config);
+            csv.Configuration.RegisterClassMap<CsvMap>();
+            var csvTaxRecords = csv.GetRecords<CsvTaxRecordViewModel>().ToList();
+
+            var csvConstituents = csvTaxRecords.DistinctBy(m => m.LookupId).AsQueryable().ProjectTo<ConstituentViewModel>().ToList();
+            var dbConstituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
+
+            var newConstituentList = csvConstituents.Except(dbConstituents, new ConstituentIdComparer()).ToList();
+            var existingConstituentList = csvConstituents.Except(newConstituentList, new ConstituentIdComparer());
+            var constituentChangeList = existingConstituentList.Except(dbConstituents, new ConstituentComparer());
+
+            // Update existing constituents that differ from database
+            foreach (var vm in constituentChangeList)
+            {
+                ConstituentViewModel cvm = dbConstituents.FirstOrDefault(x => x.LookupId == vm.LookupId);
+                vm.Id = cvm.Id;
+                cvm.CopyPropertiesFrom(vm);
+                var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
+                db.Constituents.AddOrUpdate(constituent);
             }
+            status.ConstituentsUpdated = db.SaveChanges();
 
-            using (var csv = new CsvReader(new StreamReader(filePath, Encoding.Default, true)))
+            // Add new Constituents missing from database
+            // Bulk copy new Constituent records
+            if (newConstituentList.Count > 0)
             {
-
-                csv.Configuration.WillThrowOnMissingField = false;
-                csv.Configuration.RegisterClassMap<CsvMap>();
-
-                var csvTaxRecords = csv.GetRecords<CsvTaxRecordViewModel>().ToList();
-                var csvConstituents = csvTaxRecords.DistinctBy(m => m.LookupId).AsQueryable().ProjectTo<ConstituentViewModel>().ToList();
-                var dbConstituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
-
-                var newConstituentList = csvConstituents.Except(dbConstituents, new ConstituentIdComparer()).ToList();
-                var existingConstituentList = csvConstituents.Except(newConstituentList, new ConstituentIdComparer());
-                var constituentChangeList = existingConstituentList.Except(dbConstituents, new ConstituentComparer());
-
-
-                // Update existing constituents that differ from database
-                foreach (var vm in constituentChangeList)
-                {
-                    ConstituentViewModel cvm = dbConstituents.FirstOrDefault(x => x.LookupId == vm.LookupId);
-                    vm.Id = cvm.Id;
-                    cvm.CopyPropertiesFrom(vm);
-                    var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
-                    db.Constituents.AddOrUpdate(constituent);
-                }
-                status.ConstituentsUpdated = db.SaveChanges();
-
-
-                // Add new Constituents missing from database
-                // Bulk copy new Constituent records
-                if (newConstituentList.Count > 0)
-                {
-                    var missingTbl = newConstituentList.ToDataTable();
-                    using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
-                    {
-                        sbc.DestinationTableName = "dbo.Constituents";
-                        sbc.BatchSize = 10000;
-                        sbc.BulkCopyTimeout = 0;
-
-                        sbc.ColumnMappings.Add("LookupId", "LookupId");
-                        sbc.ColumnMappings.Add("Name", "Name");
-                        sbc.ColumnMappings.Add("Street", "Street");
-                        sbc.ColumnMappings.Add("Street2", "Street2");
-                        sbc.ColumnMappings.Add("City", "City");
-                        sbc.ColumnMappings.Add("State", "State");
-                        sbc.ColumnMappings.Add("Zipcode", "Zipcode");
-                        sbc.ColumnMappings.Add("Email", "Email");
-                        sbc.ColumnMappings.Add("Phone", "Phone");
-                        await sbc.WriteToServerAsync(missingTbl);
-                    }
-                }
-                status.ConstituentsCreated = newConstituentList.Count;
-
-                // Build dictionary to map database key to csv records LookupId
-                var dic = new Dictionary<int, string>();
-                dbConstituents.ForEach(x => dic.Add(x.Id, x.LookupId));
-
-                // Update parent key for each tax record
-                csvTaxRecords.ForEach(x => x.ConstituentId = dic.FirstOrDefault(d => d.Value == x.LookupId).Key);
-
-                // Bulk insert new tax records
+                var missingTbl = newConstituentList.ToDataTable();
                 using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
                 {
-                    sbc.DestinationTableName = "dbo.TaxItems";
+                    sbc.DestinationTableName = "dbo.Constituents";
                     sbc.BatchSize = 10000;
                     sbc.BulkCopyTimeout = 0;
 
-                    sbc.ColumnMappings.Add("TaxYear", "TaxYear");
-                    sbc.ColumnMappings.Add("DonationDate", "DonationDate");
-                    sbc.ColumnMappings.Add("Amount", "Amount");
-                    sbc.ColumnMappings.Add("ConstituentId", "ConstituentId");
-
-                    var dt = csvTaxRecords.ToDataTable();
-
-                    await sbc.WriteToServerAsync(dt);
-                }
-
-                status.RecordsInFile = csvTaxRecords.Count;
-                CsvTaxRecordViewModel csvTaxRecordViewModel = csvTaxRecords.FirstOrDefault();
-                if (csvTaxRecordViewModel != null)
-                {
-                    var taxYear = csvTaxRecordViewModel.TaxYear;
-                    status.RecordsLoaded = db.TaxItems.Count(t => t.TaxYear == taxYear);
+                    sbc.ColumnMappings.Add("LookupId", "LookupId");
+                    sbc.ColumnMappings.Add("Name", "Name");
+                    sbc.ColumnMappings.Add("Street", "Street");
+                    sbc.ColumnMappings.Add("Street2", "Street2");
+                    sbc.ColumnMappings.Add("City", "City");
+                    sbc.ColumnMappings.Add("State", "State");
+                    sbc.ColumnMappings.Add("Zipcode", "Zipcode");
+                    sbc.ColumnMappings.Add("Email", "Email");
+                    sbc.ColumnMappings.Add("Phone", "Phone");
+                    await sbc.WriteToServerAsync(missingTbl);
+                    status.ConstituentsCreated = sbc.RowsCopiedCount();
                 }
             }
 
+            // Update constituents because of new bulk copy constituens
+            dbConstituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
+            // Build dictionary to map database key to csv records LookupId
+            var dic = new Dictionary<int, string>();
+            dbConstituents.ForEach(x => dic.Add(x.Id, x.LookupId));
+
+            // Update parent key for each tax record
+            csvTaxRecords.ForEach(x => x.ConstituentId = dic.FirstOrDefault(d => d.Value == x.LookupId).Key);
+
+            // Bulk insert new tax records
+            using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
+            {
+                sbc.DestinationTableName = "dbo.TaxItems";
+                sbc.BatchSize = 10000;
+                sbc.BulkCopyTimeout = 0;
+
+                sbc.ColumnMappings.Add("TaxYear", "TaxYear");
+                sbc.ColumnMappings.Add("DonationDate", "DonationDate");
+                sbc.ColumnMappings.Add("Amount", "Amount");
+                sbc.ColumnMappings.Add("ConstituentId", "ConstituentId");
+                var dt = csvTaxRecords.ToDataTable();
+
+                await sbc.WriteToServerAsync(dt);
+                status.RecordsLoaded = sbc.RowsCopiedCount();
+            }
+
+            status.RecordsInFile = csvTaxRecords.Count;
             status.Success = true;
+            if (csvTaxRecords.Count != csv.Row - 2)
+            {
+                status.Message = "Error in file header mappings. Check file headers and try again.";
+                status.Success = false;
+            }
+            else
+            {
+                status.Success = true;
+                status.Message = "Successfully loaded tax records.";
+            }
+
             status.TotalTime = DateTime.Now.Subtract(startTime).ToString(@"hh\:mm\:ss");
+            csv.Dispose();
             return status;
         }
 
