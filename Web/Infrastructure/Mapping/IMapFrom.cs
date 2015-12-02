@@ -4,4 +4,6 @@
     {
 
     }
+
+    public interface IMapTo<T> { }
 }

@@ -192,6 +192,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\ContextExtensions.cs" />
     <Compile Include="Utilities\ExtensionUtility.cs" />
     <Compile Include="Utilities\HtmlUtility.cs" />
     <Compile Include="Utilities\SqlBulkCopyExtension.cs" />

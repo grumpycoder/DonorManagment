@@ -1,9 +1,10 @@
 using CsvHelper.Configuration;
+using Domain;
 using Web.Infrastructure.Mapping;
 
 namespace Web.Models
 {
-    public class CsvTaxRecordViewModel : CsvClassMap<CsvMap>
+    public class CsvTaxRecordViewModel : CsvClassMap<CsvMap>, IMapTo<TaxItem>
     {
         public string LookupId { get; set; }
         public int ConstituentId { get; set; }

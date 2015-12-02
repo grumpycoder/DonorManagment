@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CsvHelper;
+using CsvHelper.Configuration;
 using Domain;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using CsvHelper.Configuration;
 using Web.Infrastructure;
 using Web.Infrastructure.Mapping;
 using Web.Models;
@@ -61,23 +60,16 @@ namespace Web.Controllers.Api
             return Ok(vm);
         }
 
-
         [System.Web.Http.HttpPost]
         [AsyncTimeout(60000)]
         [System.Web.Http.Route("PostTaxData")]
         public async Task<HttpResponseMessage> PostTaxData()
         {
-
             var request = HttpContext.Current.Request;
 
-            DatabaseStatusViewModel status;
             if (request.Files.Count == 0)
             {
-                status = new DatabaseStatusViewModel()
-                {
-                    Message = "No files to process"
-                };
-                return Request.CreateResponse(HttpStatusCode.BadRequest, status);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new DatabaseStatusViewModel() { Message = "No files to process" });
             }
 
             var postedFile = request.Files[0];
@@ -86,38 +78,35 @@ namespace Web.Controllers.Api
             var filePath = HttpContext.Current.Server.MapPath(@"~\app_data\" + filename);
             postedFile.SaveAs(filePath);
 
-            status = await LoadDataFile(filePath);
+            var status = await ProcessDataFile(filePath);
 
-            status.FullFileName = filePath;
             status.FileName = postedFile.FileName;
             status.FileSize = (postedFile.ContentLength / 1024f) / 1024f;
             File.Delete(filePath);
             return Request.CreateResponse(status.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest, status);
         }
 
-        private async Task<DatabaseStatusViewModel> LoadDataFile(string filePath)
+        private async Task<DatabaseStatusViewModel> ProcessDataFile(string filePath)
         {
             var startTime = DateTime.Now;
+
+            if (filePath == null || !File.Exists(filePath))
+                return new DatabaseStatusViewModel() { Message = "File does not exist or No file was uploaded" };
+
             var status = new DatabaseStatusViewModel()
             {
                 Success = false,
                 RecordsInFile = 0,
-                RecordsLoaded = 0
+                RecordsLoaded = 0,
             };
 
-            if (filePath == null || !File.Exists(filePath))
-            {
-                status.Message = "File does not exist or No file was uploaded";
-                return status;
-            }
-            
             var config = new CsvConfiguration()
             {
                 IsHeaderCaseSensitive = false,
                 WillThrowOnMissingField = false,
                 IgnoreReadingExceptions = true,
-                ThrowOnBadData = false, 
-                SkipEmptyRecords = true
+                ThrowOnBadData = false,
+                SkipEmptyRecords = true,
             };
             var csv = new CsvReader(new StreamReader(filePath, Encoding.Default, true), config);
             csv.Configuration.RegisterClassMap<CsvMap>();
@@ -134,6 +123,7 @@ namespace Web.Controllers.Api
             foreach (var vm in constituentChangeList)
             {
                 ConstituentViewModel cvm = dbConstituents.FirstOrDefault(x => x.LookupId == vm.LookupId);
+                if (cvm == null) continue;
                 vm.Id = cvm.Id;
                 cvm.CopyPropertiesFrom(vm);
                 var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
@@ -148,19 +138,13 @@ namespace Web.Controllers.Api
                 var missingTbl = newConstituentList.ToDataTable();
                 using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
                 {
-                    sbc.DestinationTableName = "dbo.Constituents";
+                    sbc.DestinationTableName = db.GetTableName<Constituent>();
                     sbc.BatchSize = 10000;
                     sbc.BulkCopyTimeout = 0;
-
-                    sbc.ColumnMappings.Add("LookupId", "LookupId");
-                    sbc.ColumnMappings.Add("Name", "Name");
-                    sbc.ColumnMappings.Add("Street", "Street");
-                    sbc.ColumnMappings.Add("Street2", "Street2");
-                    sbc.ColumnMappings.Add("City", "City");
-                    sbc.ColumnMappings.Add("State", "State");
-                    sbc.ColumnMappings.Add("Zipcode", "Zipcode");
-                    sbc.ColumnMappings.Add("Email", "Email");
-                    sbc.ColumnMappings.Add("Phone", "Phone");
+                    foreach (var col in missingTbl.Columns)
+                    {
+                        sbc.ColumnMappings.Add(col.ToString(), col.ToString());
+                    }
                     await sbc.WriteToServerAsync(missingTbl);
                     status.ConstituentsCreated = sbc.RowsCopiedCount();
                 }
@@ -178,16 +162,16 @@ namespace Web.Controllers.Api
             // Bulk insert new tax records
             using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
             {
-                sbc.DestinationTableName = "dbo.TaxItems";
+                sbc.DestinationTableName = db.GetTableName<TaxItem>();
                 sbc.BatchSize = 10000;
                 sbc.BulkCopyTimeout = 0;
 
-                sbc.ColumnMappings.Add("TaxYear", "TaxYear");
-                sbc.ColumnMappings.Add("DonationDate", "DonationDate");
-                sbc.ColumnMappings.Add("Amount", "Amount");
-                sbc.ColumnMappings.Add("ConstituentId", "ConstituentId");
-                var dt = csvTaxRecords.ToDataTable();
+                var dt = Mapper.Map<List<CsvTaxRecordViewModel>, List<TaxItem>>(csvTaxRecords).ToDataTable();
 
+                foreach (var col in dt.Columns)
+                {
+                    sbc.ColumnMappings.Add(col.ToString(), col.ToString());
+                }
                 await sbc.WriteToServerAsync(dt);
                 status.RecordsLoaded = sbc.RowsCopiedCount();
             }
