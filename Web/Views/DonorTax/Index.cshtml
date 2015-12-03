@@ -103,7 +103,7 @@
                     <button id="btnSearch"
                             class="btn btn-sm btn-primary form-submit"
                             data-tax-action="search">
-                        <i class="fa fa-search"></i>&nbsp;Search
+                        <i class="fa fa-paperclip"></i>&nbsp;Get Receipt
                     </button>
                 </div>
 
@@ -143,18 +143,18 @@
                     </div>
                 </div>
                 <div class="row hidden-print">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            @Html.DropDownListFor(model => model.SelectedTaxYear, Enumerable.Range(2010, DateTime.Now.Year - 2010).Select(x => new SelectListItem { Text = x.ToString() }), "Tax Year", new { @class = "form-control select" })
-                        </div>
-                    </div>
+@*                    <div class="col-sm-4">*@
+@*                        <div class="form-group">*@
+@*                            @Html.DropDownListFor(model => model.SelectedTaxYear, Enumerable.Range(2010, DateTime.Now.Year - 2010).Select(x => new SelectListItem { Text = x.ToString() }), "Tax Year", new { @class = "form-control select" })*@
+@*                        </div>*@
+@*                    </div>*@
                     <div class="col-sm-4 form-group">
-                        <button id="btnSearch"
-                                class="btn btn-primary"
-                                data-tax-action="search">
-                            <i class="fa fa-filter"></i>
-                            &nbsp;Filter
-                        </button>
+@*                        <button id="btnSearch"*@
+@*                                class="btn btn-primary"*@
+@*                                data-tax-action="search">*@
+@*                            <i class="fa fa-filter"></i>*@
+@*                            &nbsp;Filter*@
+@*                        </button>*@
                         <button class="btn btn-info" id="showPrint"><i class="fa fa-print"></i>&nbsp;Print</button>
                     </div>
                 </div>
