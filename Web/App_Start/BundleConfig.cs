@@ -47,13 +47,13 @@ namespace Web
                    .Include("~/content/sb-admin.css")
                    .Include("~/content/layout.css"));
 
-            bundles.Add(new StyleBundle("~/css/splcenter.css")
+            bundles.Add(new StyleBundle("~/css/splcenter")
                    .Include("~/content/bootstrap.css")
                    .Include("~/content/font-awesome.css")
                    .Include("~/content/splcenter-base.css")
                    .Include("~/content/splcenter.css"));
 
-            bundles.Add(new ScriptBundle("~/scripts/splcenter.js")
+            bundles.Add(new ScriptBundle("~/scripts/splcenter")
                    .Include("~/scripts/jquery-{version}.js")
                    .Include("~/scripts/bootstrap.js")
                    .Include("~/scripts/splc.js"));
