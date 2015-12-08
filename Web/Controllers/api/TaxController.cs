@@ -125,6 +125,8 @@ namespace Web.Controllers.Api
                 ConstituentViewModel cvm = dbConstituents.FirstOrDefault(x => x.LookupId == vm.LookupId);
                 if (cvm == null) continue;
                 vm.Id = cvm.Id;
+                vm.UpdatedBy = "system";
+                vm.UpdatedDate = DateTime.Now;
                 cvm.CopyPropertiesFrom(vm);
                 var constituent = Mapper.Map<ConstituentViewModel, Constituent>(cvm);
                 db.Constituents.AddOrUpdate(constituent);
@@ -135,6 +137,14 @@ namespace Web.Controllers.Api
             // Bulk copy new Constituent records
             if (newConstituentList.Count > 0)
             {
+                foreach (var vm in newConstituentList)
+                {
+                    vm.CreatedBy = "system";
+                    vm.UpdatedBy = "system";
+                    vm.CreatedDate = DateTime.Now;
+                    vm.UpdatedDate = DateTime.Now;
+                }
+
                 var missingTbl = newConstituentList.ToDataTable();
                 using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
                 {
@@ -145,20 +155,36 @@ namespace Web.Controllers.Api
                     {
                         sbc.ColumnMappings.Add(col.ToString(), col.ToString());
                     }
-                    await sbc.WriteToServerAsync(missingTbl);
-                    status.ConstituentsCreated = sbc.RowsCopiedCount();
+                    try
+                    {
+                        await sbc.WriteToServerAsync(missingTbl);
+                        status.ConstituentsCreated = sbc.RowsCopiedCount();
+                    }
+                    catch (Exception e)
+                    {
+                        status.Message = e.Message;
+                    }
                 }
+
             }
 
-            // Update constituents because of new bulk copy constituens
+            // Update constituents because of new bulk copy constituents
+            //TODO: Change Created and Updated user to logged in user
             dbConstituents = db.Constituents.ProjectTo<ConstituentViewModel>().ToList();
             // Build dictionary to map database key to csv records LookupId
             var dic = new Dictionary<int, string>();
             dbConstituents.ForEach(x => dic.Add(x.Id, x.LookupId));
 
             // Update parent key for each tax record
-            csvTaxRecords.ForEach(x => x.ConstituentId = dic.FirstOrDefault(d => d.Value == x.LookupId).Key);
-
+            //csvTaxRecords.ForEach(x => x.ConstituentId = dic.FirstOrDefault(d => d.Value == x.LookupId).Key);
+            csvTaxRecords.ForEach((s) =>
+            {
+                s.ConstituentId = dic.FirstOrDefault(d => d.Value == s.LookupId).Key;
+                s.CreatedBy = "system";
+                s.UpdatedBy = "system";
+                s.CreatedDate = DateTime.Now;
+                s.UpdatedDate = DateTime.Now;
+            });
             // Bulk insert new tax records
             using (var sbc = new SqlBulkCopy(db.Database.Connection.ConnectionString))
             {
@@ -172,8 +198,15 @@ namespace Web.Controllers.Api
                 {
                     sbc.ColumnMappings.Add(col.ToString(), col.ToString());
                 }
-                await sbc.WriteToServerAsync(dt);
-                status.RecordsLoaded = sbc.RowsCopiedCount();
+                try
+                {
+                    await sbc.WriteToServerAsync(dt);
+                    status.RecordsLoaded = sbc.RowsCopiedCount();
+                }
+                catch (Exception ex)
+                {
+                    status.Message = ex.Message;
+                }
             }
 
             status.RecordsInFile = csvTaxRecords.Count;

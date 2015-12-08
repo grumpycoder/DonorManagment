@@ -1,7 +1,6 @@
-using System;
 using AutoMapper;
 using Domain;
-using Web.Controllers.Api;
+using System;
 using Web.Infrastructure.Mapping;
 
 namespace Web.Models
@@ -18,6 +17,10 @@ namespace Web.Models
         public string Zipcode { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         public void CreateMappings(IConfiguration config)
         {

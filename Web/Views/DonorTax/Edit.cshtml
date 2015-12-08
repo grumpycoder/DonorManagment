@@ -1,0 +1,20 @@
+﻿@model Web.Models.TaxViewModel
+@{
+    Layout = "~/Views/Shared/_DonorTaxLayout.cshtml";
+    ViewBag.Title = "Update Information";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.EventCommand)
+
+@Html.TextBoxFor(m => m.Entity.Name) <br>
+@Html.TextBoxFor(m => m.Entity.Street) <br>
+@Html.TextBoxFor(m => m.Entity.Street2) <br>
+@Html.TextBoxFor(m => m.Entity.City) <br>
+@Html.TextBoxFor(m => m.Entity.State) <br>
+@Html.TextBoxFor(m => m.Entity.Zipcode) <br>
+
+    <button class="btn btn-success"><i class="fa fa-save"></i>&nbsp;Save</button>
+}

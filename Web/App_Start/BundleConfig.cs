@@ -40,6 +40,10 @@ namespace Web
                    .Include("~/scripts/ng-file-input.js")
                    .IncludeDirectory("~/js/apps/taxdatamanager/", "*.js", true));
 
+            bundles.Add(new ScriptBundle("~/scripts/donortax")
+                   .IncludeDirectory("~/js/apps/donortax/", "*.js", true));
+
+
 
             bundles.Add(new StyleBundle("~/css/all.css")
                    .Include("~/content/font-awesome.css")

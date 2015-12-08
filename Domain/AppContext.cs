@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Domain
@@ -33,5 +35,21 @@ namespace Domain
         public DbSet<Constituent> Constituents { get; set; }
         public DbSet<Template> Templates { get; set; }
         public DbSet<TaxItem> TaxItems { get; set; }
+
+        public override int SaveChanges()
+        {
+            var selectedEntityList = ChangeTracker.Entries()
+                                    .Where(x => x.Entity is BaseEntity &&
+                                    (x.State == EntityState.Modified));
+
+            foreach (var entity in selectedEntityList)
+            {
+                ((BaseEntity)entity.Entity).UpdatedDate = DateTime.Now;
+            }
+
+            return base.SaveChanges();
+        }
     }
+
+
 }

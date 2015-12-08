@@ -1,23 +1,21 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
 using Web.Models;
 
-namespace Web.Controllers.web
+namespace Web.Controllers.Api
 {
-    public class DonorTaxController : BaseController
+
+    public class DonorTaxApiController : ApiBaseController
     {
 
-        // GET: DonorTax/Home
-        public ActionResult Index()
+        public IHttpActionResult Get()
         {
             var vm = new TaxViewModel();
             vm.HandleRequest();
             vm.IsValid = true;
-            return View(vm);
-
+            return Ok(vm);
         }
 
-        [HttpPost]
-        public ActionResult Index(TaxViewModel vm)
+        public IHttpActionResult Post(TaxViewModel vm)
         {
             vm.IsValid = ModelState.IsValid;
             vm.HandleRequest();
@@ -36,7 +34,7 @@ namespace Web.Controllers.web
                 }
             }
 
-            return View(vm);
+            return Ok(vm);
         }
 
     }

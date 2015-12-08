@@ -1,5 +1,5 @@
-﻿using System.Web.Http;
-using Domain;
+﻿using Domain;
+using System.Web.Http;
 
 namespace Web.Controllers
 {

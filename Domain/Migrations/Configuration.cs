@@ -1,38 +1,25 @@
+using System;
 using System.Collections.Generic;
+using System.Data.Entity.Migrations;
 
 namespace Domain.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Domain.AppContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<AppContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Domain.AppContext context)
+        protected override void Seed(AppContext context)
         {
             //  This method will be called after migrating to the latest version.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-
-            context.Constituents.AddOrUpdate(new Constituent()
+            context.Constituents.AddOrUpdate(c => c.LookupId, new Constituent()
             {
-                Name = "Heather Bossin", 
-                LookupId = "10782387129", 
+                Name = "Heather Bossin",
+                LookupId = "10782387129",
                 TaxItems = new List<TaxItem>()
                 {
                     new TaxItem() {TaxYear = 2014, Amount = 25, DonationDate = DateTime.Parse("2/3/2014")},
@@ -40,7 +27,7 @@ namespace Domain.Migrations
                 }
             });
 
-            context.Constituents.AddOrUpdate(new Constituent()
+            context.Constituents.AddOrUpdate(c => c.LookupId, new Constituent()
             {
                 Name = "Mervin Slobodin",
                 LookupId = "10972679863",
@@ -54,7 +41,7 @@ namespace Domain.Migrations
                 }
             });
 
-            context.Constituents.AddOrUpdate(new Constituent()
+            context.Constituents.AddOrUpdate(c => c.LookupId, new Constituent()
             {
                 Name = "Eugene Rogers",
                 LookupId = "10972692270",
@@ -63,6 +50,14 @@ namespace Domain.Migrations
                     new TaxItem() {TaxYear = 2014, Amount = 14, DonationDate = DateTime.Parse("1/24/2014")},
                     new TaxItem() {TaxYear = 2014, Amount = 14, DonationDate = DateTime.Parse("2/24/2014")}
                 }
+            });
+
+            context.Templates.AddOrUpdate(t => t.Name, new Template()
+            {
+                Name = "DonorTax",
+                HeaderText = "**Tax Receipt**",
+                BodyText = "To view and print your tax receipt for donations made to SPLC, please enter the Supporter ID number that was provided to you. Thank you for your generous support of the Southern Poverty Law Center.",
+                FAQText = "*This will serve as your receipt for tax purposes. The Southern Poverty Law Center is a 501(c)(3) organization. Gifts to the Center are fully tax-deductible. No goods or services are ever sent in exchange for gifts.*"
             });
 
         }

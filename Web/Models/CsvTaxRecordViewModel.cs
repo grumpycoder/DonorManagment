@@ -1,5 +1,6 @@
 using CsvHelper.Configuration;
 using Domain;
+using System;
 using Web.Infrastructure.Mapping;
 
 namespace Web.Models
@@ -19,5 +20,10 @@ namespace Web.Models
         public string DonationDate { get; set; }
         public decimal Amount { get; set; }
         public int TaxYear { get; set; }
+
+        public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
     }
 }

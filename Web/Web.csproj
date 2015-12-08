@@ -171,6 +171,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
+    <Compile Include="Controllers\api\DonorTaxApi.cs" />
+    <Compile Include="Controllers\api\ValuesController.cs" />
     <Compile Include="Controllers\web\DonorTaxController.cs" />
     <Compile Include="Models\TaxViewModel.cs" />
     <Compile Include="Services\TemplateManager.cs" />
@@ -198,6 +200,9 @@
     <Compile Include="Utilities\SqlBulkCopyExtension.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="img\footer-bg.jpg" />
+    <Content Include="js\apps\DonorTax\DonorTax.app.js" />
+    <Content Include="js\apps\DonorTax\DonorTax.controller.js" />
     <Content Include="js\apps\TaxDataManager\DataManager.app.js" />
     <Content Include="js\apps\TaxDataManager\DataManager.controller.js" />
     <Content Include="js\apps\TaxTemplate\TaxTemplate.controller.js" />
@@ -363,6 +368,7 @@
     <Content Include="Views\Tax\TaxUpload.cshtml" />
     <Content Include="Views\DonorTax\Index.cshtml" />
     <Content Include="Views\Shared\_DonorTaxLayout.cshtml" />
+    <Content Include="Views\DonorTax\Edit.cshtml" />
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

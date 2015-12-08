@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using Web.Services;
 
@@ -20,8 +21,6 @@ namespace Web.Models
             IsDetailsVisible = false;
             SelectedTaxYear = DateTime.Now.Year - 1;
             AcceptTerms = false;
-            IsValid = true;
-
         }
 
         private const string templateName = "DonorTax";
@@ -33,14 +32,16 @@ namespace Web.Models
         public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
 
         public int SelectedTaxYear { get; set; }
+
         [Display(Name = "I have read and accept the policy")]
         public bool AcceptTerms { get; set; }
+
         public decimal TotalTax { get; set; }
-
-
 
         public string EventCommand { get; set; }
         public bool IsDetailsVisible { get; set; }
+        public bool IsEditVisible { get; set; }
+
         public bool IsTaxDataAvailable { get; set; }
         public bool IsValid { get; set; }
 
@@ -51,8 +52,14 @@ namespace Web.Models
             {
                 case "list":
                 case "search":
-                    Get(SearchEntity.LookupId);
+                    Search();
                     GetTemplate();
+                    break;
+                case "edit":
+                    Edit();
+                    break;
+                case "save":
+                    Save();
                     break;
             }
         }
@@ -63,16 +70,19 @@ namespace Web.Models
             Template = mgr.Get(templateName);
         }
 
-        private void Get(string constituentId)
+        private void Search()
         {
             var mgr = new TaxManager();
-
-            Entity = mgr.Get(SearchEntity);
+            Entity = mgr.Search(SearchEntity);
             ValidationErrors = mgr.ValidationErrors;
 
-            if (!AcceptTerms) ValidationErrors.Add(new KeyValuePair<string, string>("Accept", "You must accept the policy."));
+            if (!AcceptTerms)
+                ValidationErrors.Add(new KeyValuePair<string, string>("Accept", "You must accept the policy."));
 
-            if (ValidationErrors.Count > 0) { IsValid = false; }
+            if (ValidationErrors.Count > 0)
+            {
+                IsValid = false;
+            }
 
             if (Entity == null) IsValid = false;
 
@@ -84,11 +94,45 @@ namespace Web.Models
             IsDetailsVisible = true;
         }
 
-
-        private void ResetSearch()
+        private void EditMode()
         {
-            SearchEntity = new Constituent();
+            IsEditVisible = true;
+            IsDetailsVisible = false;
         }
+
+        private void Edit()
+        {
+            IsValid = true;
+            Search();
+            EditMode();
+        }
+
+        private void Save()
+        {
+            IsValid = true;
+            var mgr = new TaxManager();
+            mgr.Update(Entity);
+            ValidationErrors = mgr.ValidationErrors;
+            if (ValidationErrors.Count > 0)
+            {
+                IsValid = false;
+            }
+            if (!IsValid)
+            {
+                IsEditVisible = true;
+                IsDetailsVisible = false;
+            }
+            else
+            {
+                IsEditVisible = false;
+                IsDetailsVisible = true;
+                SearchEntity = Entity;
+                SearchEntity.Zipcode = SearchEntity.Zipcode.Substring(0, 5);
+                Search();
+                GetTemplate();
+            }
+        }
+
     }
 
 
@@ -101,19 +145,19 @@ namespace Web.Models
 
         public List<KeyValuePair<string, string>> ValidationErrors { get; set; }
 
-        public Constituent Get(Constituent entity)
+        public Constituent Search(Constituent entity)
         {
             using (var db = new AppContext())
             {
-                var ret = db.Constituents.Include(t => t.TaxItems).FirstOrDefault(c => c.LookupId == entity.LookupId && c.Zipcode.Substring(0, 5).Equals(entity.Zipcode));
-                Validate(entity);
+                var ret = db.Constituents.Include(t => t.TaxItems).FirstOrDefault(c => c.LookupId == entity.LookupId && c.Zipcode.Substring(0, 5).Equals(entity.Zipcode.Substring(0, 5)));
+                ValidateSearch(entity);
                 if (ret == null) ValidationErrors.Add(new KeyValuePair<string, string>("Not Found", "No tax records found for given supporter."));
 
                 return ret;
             }
         }
 
-        private bool Validate(Constituent entity)
+        private bool ValidateSearch(Constituent entity)
         {
             ValidationErrors.Clear();
 
@@ -122,18 +166,31 @@ namespace Web.Models
 
             return ValidationErrors.Count == 0;
         }
-    }
-//
-//    public class TemplateManager
-//    {
-//        public Template Get(string templateName)
-//        {
-//            using (var db = new AppContext())
-//            {
-//                return db.Templates.FirstOrDefault(t => t.Name == templateName);
-//            }
-//        }
-//    }
 
+        private bool Validate(Constituent entity)
+        {
+            ValidationErrors.Clear();
+            if (string.IsNullOrWhiteSpace(entity.Name)) ValidationErrors.Add(new KeyValuePair<string, string>("Name", "Name is required"));
+
+            return ValidationErrors.Count == 0;
+        }
+
+        public void Update(Constituent entity)
+        {
+            var isValid = Validate(entity);
+            if (!isValid) return;
+
+            using (var db = new AppContext())
+            {
+                var existing = db.Constituents.Find(entity.Id);
+                if (entity.Equals(existing)) return;
+
+                entity.IsUpdated = true;
+                entity.UpdatedBy = "donor";
+                db.Constituents.AddOrUpdate(entity);
+                db.SaveChanges();
+            }
+        }
+    }
 
 }
