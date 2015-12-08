@@ -368,7 +368,6 @@
     <Content Include="Views\Tax\TaxUpload.cshtml" />
     <Content Include="Views\DonorTax\Index.cshtml" />
     <Content Include="Views\Shared\_DonorTaxLayout.cshtml" />
-    <Content Include="Views\DonorTax\Edit.cshtml" />
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

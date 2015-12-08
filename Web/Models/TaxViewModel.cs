@@ -126,8 +126,6 @@ namespace Web.Models
             {
                 IsEditVisible = false;
                 IsDetailsVisible = true;
-                SearchEntity = Entity;
-                SearchEntity.Zipcode = SearchEntity.Zipcode.Substring(0, 5);
                 Search();
                 GetTemplate();
             }
