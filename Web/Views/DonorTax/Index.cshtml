@@ -240,6 +240,14 @@
                                 @Html.TextBoxFor(m => m.Entity.Name, new {@class = "form-control"})
                             </div>
                             <div class="form-group">
+                                @Html.LabelFor(m => m.Entity.Email, new {@class = "control-label"})
+                                @Html.TextBoxFor(m => m.Entity.Email, new {@class = "form-control"})
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Entity.Phone, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.Entity.Phone, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
                                 @Html.LabelFor(m => m.Entity.Street, new {@class = "control-label"})
                                 @Html.TextBoxFor(m => m.Entity.Street, new {@class = "form-control"})
                             </div>
@@ -298,9 +306,3 @@
     </script>
 
 }
-
-
-
-
-
-

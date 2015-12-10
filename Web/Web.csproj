@@ -171,7 +171,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
-    <Compile Include="Controllers\api\DonorTaxApi.cs" />
+    <Compile Include="Controllers\api\ConstituentApiController.cs" />
+    <Compile Include="Controllers\api\DonorTaxApiController.cs" />
+    <Compile Include="Models\SearchViewModel.cs" />
+    <Compile Include="Controllers\api\TaxApiController.cs" />
     <Compile Include="Controllers\api\ValuesController.cs" />
     <Compile Include="Controllers\web\DonorTaxController.cs" />
     <Compile Include="Models\TaxViewModel.cs" />
@@ -185,7 +188,7 @@
     <Compile Include="Infrastructure\Mapping\IHaveCustomMappings.cs" />
     <Compile Include="Infrastructure\Mapping\IMapFrom.cs" />
     <Compile Include="Models\RecordLoadStatus.cs" />
-    <Compile Include="Controllers\api\TaxController.cs" />
+    <Compile Include="Models\PagedCollection.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\web\HomeController.cs" />
     <Compile Include="Controllers\web\ProfileController.cs" />
@@ -197,12 +200,15 @@
     <Compile Include="Utilities\ContextExtensions.cs" />
     <Compile Include="Utilities\ExtensionUtility.cs" />
     <Compile Include="Utilities\HtmlUtility.cs" />
+    <Compile Include="Utilities\PredicateBuilder.cs" />
     <Compile Include="Utilities\SqlBulkCopyExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="img\footer-bg.jpg" />
-    <Content Include="js\apps\DonorTax\DonorTax.app.js" />
-    <Content Include="js\apps\DonorTax\DonorTax.controller.js" />
+    <Content Include="js\apps\common\constituent.service.js" />
+    <Content Include="js\apps\TaxDataManager\templates\modal.html" />
+    <Content Include="js\apps\TaxDataUpload\TaxDataUpload.app.js" />
+    <Content Include="js\apps\TaxDataUpload\TaxDataUpload.controller.js" />
     <Content Include="js\apps\TaxDataManager\DataManager.app.js" />
     <Content Include="js\apps\TaxDataManager\DataManager.controller.js" />
     <Content Include="js\apps\TaxTemplate\TaxTemplate.controller.js" />

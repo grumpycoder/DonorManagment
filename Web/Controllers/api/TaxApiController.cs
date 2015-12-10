@@ -1,9 +1,3 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using CsvHelper;
-using CsvHelper.Configuration;
-using Domain;
-using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
@@ -17,6 +11,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CsvHelper;
+using CsvHelper.Configuration;
+using Domain;
+using Microsoft.Ajax.Utilities;
 using Web.Infrastructure;
 using Web.Infrastructure.Mapping;
 using Web.Models;
@@ -25,7 +25,7 @@ using Web.Utilities;
 namespace Web.Controllers.Api
 {
     [System.Web.Http.RoutePrefix("api/tax")]
-    public class TaxController : ApiBaseController
+    public class TaxApiController : ApiBaseController
     {
 
         [System.Web.Http.Route("template")]
@@ -56,6 +56,43 @@ namespace Web.Controllers.Api
                     ModelState.AddModelError(item.Key, item.Value);
                 }
             }
+
+            return Ok(vm);
+        }
+
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult Constituents(SearchViewModel vm)
+        {
+            var page = vm.Page.GetValueOrDefault(0);
+            var pageSize = vm.PageSize.GetValueOrDefault(10);
+            var skipRows = (page - 1) * pageSize;
+
+            var pred = PredicateBuilder.True<Constituent>();
+            if(vm.IsUpdated != null) pred = pred.And(p => p.IsUpdated.HasValue == (vm.IsUpdated ?? null));
+            if (!string.IsNullOrWhiteSpace(vm.Name)) pred = pred.And(p => p.Name.Contains(vm.Name));
+            if(!string.IsNullOrWhiteSpace(vm.FinderNumber)) pred = pred.And(p => p.FinderNumber.Contains(vm.FinderNumber));
+            if(!string.IsNullOrWhiteSpace(vm.LookupId)) pred = pred.And(p => p.LookupId.Contains(vm.LookupId));
+
+            var paged = db.Constituents.AsQueryable()
+                .Where(pred).OrderBy(x => x.Id).Skip(skipRows).Take(pageSize).ProjectTo<ConstituentViewModel>().ToList();
+            var totalCount = db.Constituents.Count();
+            var filterCount = db.Constituents.Where(pred).Count();
+            var TotalPages = (int) Math.Ceiling((decimal) totalCount/pageSize);
+
+//            var list = new PagedCollection<Constituent>()
+//            {
+//                Page = page,
+//                TotalCount = total,
+//                FilteredCount = filterTotal,
+//                TotalPages = (int)Math.Ceiling((decimal)total / pageSize),
+//                Items = paged
+//            };
+
+
+            vm.TotalCount = totalCount;
+            vm.FilteredCount = filterCount;
+            vm.TotalPages = TotalPages;
+            vm.Items = paged; 
 
             return Ok(vm);
         }

@@ -1,11 +1,12 @@
 ﻿
 
 
-<div ng-app="TaxDataManager" ng-controller="MainCtrl as vm">
+<div ng-app="TaxDataUpload" ng-controller="MainCtrl as vm">
 
     <section class="content-header">
         <h1>
             {{title}}
+            <small>{{description}}</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -117,7 +118,7 @@
 @section scripts
 {
     @Scripts.Render("~/scripts/angular")
-    @Scripts.Render("~/scripts/taxdatamanager")
+    @Scripts.Render("~/scripts/taxdataupload")
 }
 
 

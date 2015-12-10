@@ -1,0 +1,46 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Update {{ vm.item.name }}</h3>
+</div>
+<div class="modal-body">
+    <form novalidate="">
+        <div class="form-group">
+            <label for="" class="control-label">Name</label>
+            <input type="text" class="form-control" ng-model="vm.item.name">
+        </div>
+        <div class="form-group">
+            <label for="" class="control-label">Email</label>
+            <input type="text" class="form-control" ng-model="vm.item.email">
+        </div>
+
+        <div class="form-group">
+            <label for="" class="control-label">Phone</label>
+            <input type="text" class="form-control" ng-model="vm.item.phone">
+        </div>
+
+        <div class="form-group">
+            <label for="" class="control-label">Street</label>
+            <input type="text" class="form-control" ng-model="vm.item.street">
+        </div>
+        <div class="form-group">
+            <label for="" class="control-label">Street</label>
+            <input type="text" class="form-control" ng-model="vm.item.street2">
+        </div>
+        <div class="form-group">
+            <label for="" class="control-label">City</label>
+            <input type="text" class="form-control" ng-model="vm.item.city">
+        </div>
+        <div class="form-group">
+            <label for="" class="control-label">State</label>
+            <input type="text" class="form-control" ng-model="vm.item.state">
+        </div>
+        <div class="form-group">
+            <label for="" class="control-label">Zipcode</label>
+            <input type="text" class="form-control" ng-model="vm.item.zipcode">
+        </div>
+    </form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-success" ng-click="vm.save()">Save</button>
+    <button class="btn" ng-click="$close()">Cancel</button>
+</div>
