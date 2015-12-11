@@ -21,7 +21,8 @@ namespace Web
                       "~/css/font-awesome.css",
                       "~/css/ionicons.css",
                       "~/css/AdminLTE.css",
-                      "~/css/skins/skin-green.css"));
+                      "~/css/skins/skin-green.css", 
+                      "~/css/site.css"));
 
 
             bundles.Add(new ScriptBundle("~/scripts/angular")

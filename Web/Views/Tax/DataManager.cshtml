@@ -27,7 +27,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="col-md-6">
 
                                     <div class="dataTables_length" id="example1_length">
@@ -46,47 +46,46 @@
                                         <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1"></label>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
-                                        <thead>
-                                        <tr role="row">
-                                            <th></th>
-                                            <th>Name</th>
-                                            <th>LookupId</th>
-                                            <th>Finder Number</th>
-                                            <th>Address</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Updated</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="item in vm.result.items">
-                                            <td>
-                                                <button class="btn btn-sm" ng-click="vm.editModal(item)">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm" ng-click="vm.editModal(item)">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                            </td>
-                                            <td>{{item.name}}</td>
-                                            <td>{{item.lookupId}}</td>
-                                            <td>{{item.finderNumber}}</td>
-                                            <td>
-                                                {{item.street}} <br>
-                                                {{item.street2}} <br>
-                                                {{item.city}}, {{item.state}} {{item.zipcode}}
-                                            </td>
-                                            <td>{{item.email}}</td>
-                                            <td>{{item.phone}}</td>
-                                            <td>{{item.isUpdated}}</td>
-                                        </tr>
-                                        <tfoot>
-                                        </tfoot>
-                                    </table>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="item in vm.result.items">
+                                            <div class="product-info">
+                                                <span class="product-title">
+                                                    <a href="#" ng-click="vm.editModal(item)">{{item.name}}</a>
+                                                    <span class="label label-warning pull-right" ng-click="vm.showTaxItems(item.id)">View Taxes</span>
+                                                </span>
+                                                <div class="product-description">
+                                                    <span ng-show="item.street">
+                                                        {{item.street}}
+                                                        <span ng-show="item.street2"><br />{{item.street2}}</span>
+                                                    </span>
+                                                    {{item.city}} <span ng-show="item.city">,</span> {{item.state}} {{item.zipcode}}
+
+
+                                                </div>
+                                            </div>
+
+
+                                            @*<div>
+                                                <h4>{{item.name}}</h4><span class="pull-right">Show Tax Items</span>
+                                                <div>
+                                                    <span ng-show="item.street">
+                                                        {{item.street}}
+                                                        <span ng-show="item.street2"><br />{{item.street2}}</span>
+                                                    </span>
+                                                    {{item.city}} <span ng-show="item.city">,</span> {{item.state}} {{item.zipcode}}
+
+                                                </div>
+
+                                            </div>*@
+
+
+
+                                        </li>
+                                    </ul>
+
                                 </div>
                             </div>
                             <div class="row">

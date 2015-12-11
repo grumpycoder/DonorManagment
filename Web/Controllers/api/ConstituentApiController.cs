@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
+using EntityFramework.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web.Http;
@@ -66,5 +68,23 @@ namespace Web.Controllers.api
         {
         }
 
+        [HttpGet]
+        [Route("api/constituent/{constituentId:int}/taxes")]
+        public IHttpActionResult GetTaxItems(int constituentId)
+        {
+            var list = db.TaxItems.Where(x => x.ConstituentId == constituentId).ToList();
+            return Ok(list);
+        }
+
+        [HttpPost]
+        [Route("api/constituent/{constituentId:int}/taxes")]
+        public IHttpActionResult GetTaxItems(int constituentId, List<TaxItem> vm)
+        {
+            var list = vm;
+            EFBatchOperation.For(db, db.TaxItems).UpdateAll(list, x => x.ColumnsToUpdate(c => c.Amount, c => c.DonationDate, c => c.TaxYear));
+
+            return Ok();
+
+        }
     }
 }

@@ -1,0 +1,17 @@
+﻿<div class="modal-header">
+    <h3 class="modal-title">Tax Items for {{ vm.item.name }}</h3>
+</div>
+<div class="modal-body">
+
+    test
+    <ul>
+        <li ng-repeat="item in vm.taxItems">
+            {{item.amount}}
+            <input type="text" ng-model="item.amount">
+        </li>
+    </ul>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-success" ng-click="vm.save()">Save</button>
+    <button class="btn" ng-click="$close()">Cancel</button>
+</div>
