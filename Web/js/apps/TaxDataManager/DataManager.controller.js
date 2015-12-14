@@ -15,11 +15,13 @@
 
         vm.result = {
             page: 1,
-            pageSize: 25
+            pageSize: 5
         };
 
         vm.editModal = editModal;
         vm.showTaxItems = showTaxItems;
+        vm.search = search;
+        vm.showPager = showPager;
 
         init();
 
@@ -31,8 +33,18 @@
             $http.post('/api/constituents', vm.result)
                  .success(function (response) {
                      vm.result = response;
-                 });
+                     console.log(vm.result);
+
+                });
         };
+
+        function search() {
+            getConstituents();
+        }
+
+        function showPager() {
+            return vm.result.totalPages > 1;
+        }
 
         function editModal(item) {
             $modal.open({
@@ -68,7 +80,7 @@
         vm.years = [];
 
         var constituentId = items[0].constituentId;
-        
+
         var currentYear = parseInt(moment().get('Year') - 1);
         for (var i = 0; i < 5; i++) {
             vm.years.push(currentYear - i);
@@ -77,7 +89,7 @@
             taxYear: currentYear
         };
 
-        vm.deletedItems = []; 
+        vm.deletedItems = [];
         vm.editItem = editItem;
         vm.saveChanges = saveChanges;
         vm.saveItem = saveItem;
@@ -86,14 +98,14 @@
 
         vm.currentEdit = {};
         vm.hasChanges = false;
-      
+
 
 
         function deleteItem(item) {
             var idx = vm.taxItems.indexOf(item);
             vm.deletedItems.push(item);
             vm.taxItems.splice(idx, 1);
-            vm.hasChanges = true; 
+            vm.hasChanges = true;
         }
 
         function editItem(item) {

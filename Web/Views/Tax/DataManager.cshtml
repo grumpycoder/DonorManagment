@@ -26,25 +26,21 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="form-inline dt-bootstrap">
+
                             <div class="row">
-                                <div class="col-md-6">
-
-                                    <div class="dataTables_length" id="example1_length">
-                                        <label>
-                                            Show
-                                            <select ng-model="vm.result.pageSize" ng-options="item for item in ['10','15','20', '25', '50']"></select>
-
-                                            <select ng-model="vm.result.pageSize" ng-options="item for item in pageSizes"></select>
-                                            <span>Selected value: {{vm.result.pageSize}}</span>
-                                            entries
-                                        </label>
-                                    </div>
+                                <div class="col-sm-12">
+                                    <label>
+                                        Search:
+                                        <input type="search" class="form-control input-sm" placeholder="Finder Number" ng-model="vm.result.finderNumber">
+                                        <input type="search" class="form-control input-sm" placeholder="LookupId" ng-model="vm.result.lookupId">
+                                        <input type="search" class="form-control input-sm" placeholder="Name" ng-model="vm.result.name">
+                                    </label>
+                                    <button class="btn btn-primary" ng-click="vm.search()">Search</button>
                                 </div>
-                                <div class="col-md-6">
-                                    <div id="example1_filter" class="dataTables_filter pull-right">
-                                        <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1"></label>
-                                    </div>
+                                <div class="col-sm-12">
+                                    <span>Page {{vm.result.page}} of {{vm.result.totalPages}}</span>
+                                    <span class="pull-right">{{vm.result.filteredCount}} records (filtered from {{vm.result.totalCount}})</span>
                                 </div>
                             </div>
                             <div class="row">
@@ -60,7 +56,7 @@
                                                         <a href="" ng-click="vm.editModal(item)"><strong>{{item.name}}</strong></a><br>
                                                         {{item.street}}<br>
                                                         {{item.city}}, {{item.state}} {{item.zipcode}}<br>
-                                                        <abbr title="Phone">Phone:</abbr> {{item.phone}}<br/>
+                                                        <abbr title="Phone">Phone:</abbr> {{item.phone}}<br />
                                                         <abbr title="email">Email:</abbr> {{item.email}}
                                                     </address>
 
@@ -80,16 +76,18 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">
-                                        Showing {{vm.result.page}} of {{vm.result.totalPages}} pages of {{vm.result.filteredCount}} entries (filtered from {{vm.result.totalCount}})
-                                    </div>
+                               
+                                <div class="col-sm-8">
+                                    <uib-pagination ng-show="vm.showPager()" total-items="vm.result.filteredCount"
+                                                    ng-model="vm.result.page"
+                                                    ng-change="vm.search()"
+                                                    items-per-page="vm.result.pageSize"
+                                                    class="pagination-sm"
+                                                    boundary-links="true"
+                                                    rotate="false"></uib-pagination>
+                                   
                                 </div>
-                                <div class="col-sm-7">
-                                    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                        <ul class="pagination"><li class="paginate_button previous disabled" id="example1_previous"><a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0">Next</a></li></ul>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

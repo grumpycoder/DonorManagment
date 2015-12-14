@@ -33,7 +33,7 @@ namespace Web.Controllers.api
 
             var totalCount = db.Constituents.Count();
             var filterCount = db.Constituents.Where(pred).Count();
-            var TotalPages = (int)Math.Ceiling((decimal)totalCount / pageSize);
+            var TotalPages = (int)Math.Ceiling((decimal)filterCount / pageSize);
 
             vm.TotalCount = totalCount;
             vm.FilteredCount = filterCount;
