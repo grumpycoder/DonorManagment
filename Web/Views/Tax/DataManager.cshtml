@@ -2,7 +2,7 @@
     ViewBag.Title = "Tax Manager";
 }
 
-<div ng-app="TaxDataManager" ng-controller="MainCtrl as vm">
+<div ng-app="TaxDataManager" ng-controller="MainCtrl as vm" ng-cloak="">
     <section class="content-header">
         <h1>
             {{vm.title}}
@@ -27,7 +27,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                            @*<div class="row">
+                            <div class="row">
                                 <div class="col-md-6">
 
                                     <div class="dataTables_length" id="example1_length">
@@ -46,43 +46,34 @@
                                         <label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="example1"></label>
                                     </div>
                                 </div>
-                            </div>*@
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <ul class="list-group">
                                         <li class="list-group-item" ng-repeat="item in vm.result.items">
-                                            <div class="product-info">
-                                                <span class="product-title">
-                                                    <a href="#" ng-click="vm.editModal(item)">{{item.name}}</a>
+                                            <div>
+                                                <span>
                                                     <span class="label label-warning pull-right" ng-click="vm.showTaxItems(item.id)">View Taxes</span>
                                                 </span>
-                                                <div class="product-description">
-                                                    <span ng-show="item.street">
-                                                        {{item.street}}
-                                                        <span ng-show="item.street2"><br />{{item.street2}}</span>
-                                                    </span>
-                                                    {{item.city}} <span ng-show="item.city">,</span> {{item.state}} {{item.zipcode}}
+                                                <div>
+                                                    <address>
+                                                        <a href="" ng-click="vm.editModal(item)"><strong>{{item.name}}</strong></a><br>
+                                                        {{item.street}}<br>
+                                                        {{item.city}}, {{item.state}} {{item.zipcode}}<br>
+                                                        <abbr title="Phone">Phone:</abbr> {{item.phone}}<br/>
+                                                        <abbr title="email">Email:</abbr> {{item.email}}
+                                                    </address>
 
-
+                                                </div>
+                                                <div>
+                                                    <dl>
+                                                        <dt>LookupId</dt>
+                                                        <dd>{{item.lookupId}}</dd>
+                                                        <dt>FinderNumber</dt>
+                                                        <dd>{{item.finderNumber}}</dd>
+                                                    </dl>
                                                 </div>
                                             </div>
-
-
-                                            @*<div>
-                                                <h4>{{item.name}}</h4><span class="pull-right">Show Tax Items</span>
-                                                <div>
-                                                    <span ng-show="item.street">
-                                                        {{item.street}}
-                                                        <span ng-show="item.street2"><br />{{item.street2}}</span>
-                                                    </span>
-                                                    {{item.city}} <span ng-show="item.city">,</span> {{item.state}} {{item.zipcode}}
-
-                                                </div>
-
-                                            </div>*@
-
-
-
                                         </li>
                                     </ul>
 

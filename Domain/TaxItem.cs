@@ -2,7 +2,7 @@
 
 namespace Domain
 {
-    public class TaxItem: BaseEntity
+    public class TaxItem : BaseEntity
     {
         public int ConstituentId { get; set; }
         public int TaxYear { get; set; }

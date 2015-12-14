@@ -13,7 +13,8 @@ namespace Web
                    "~/css/bootstrap/js/bootstrap.js",
                    "~/js/plugins/fastclick/fastclick.js",
                    "~/js/app.js",
-                   "~/js/plugins/slimScroll/jquery.slimscroll.js"));
+                   "~/js/plugins/slimScroll/jquery.slimscroll.js", 
+                   "~/js/plugins/moment.js"));
 
 
             bundles.Add(new StyleBundle("~/css/all").Include(
@@ -31,7 +32,8 @@ namespace Web
                       "~/scripts/codemwnci/Markdown.Converter.js",
                       "~/scripts/codemwnci/Markdown.Sanitizer.js",
                       "~/scripts/codemwnci/bootstrap-markdown.js",
-                      "~/scripts/codemwnci/markdown-editpreview-ng.js"));
+                      "~/scripts/codemwnci/markdown-editpreview-ng.js")
+                      .IncludeDirectory("~/js/apps/directives", "*.js"));
 
 
             bundles.Add(new ScriptBundle("~/scripts/taxtemplate")

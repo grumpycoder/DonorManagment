@@ -1,17 +1,75 @@
 ﻿<div class="modal-header">
     <h3 class="modal-title">Tax Items for {{ vm.item.name }}</h3>
 </div>
-<div class="modal-body">
+<div class="modal-body" ng-cloak="">
+    <div class="row">
 
-    test
-    <ul>
-        <li ng-repeat="item in vm.taxItems">
-            {{item.amount}}
-            <input type="text" ng-model="item.amount">
-        </li>
-    </ul>
+        <div class="col-sm-4">
+            <select ng-model="vm.selectedYear.taxYear"
+                    ng-options="taxYear for taxYear in vm.years" class="form-control">
+                <option value="">Choose a tax year</option>
+            </select>
+        </div>
+    </div>
+    <div class="">
+        
+            <table class="table table-bordered table-condensed table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Amount</th>
+                        <th>Donation Date</th>
+                        <th>TaxYear</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in vm.taxItems | filter:vm.selectedYear">
+                        <td class="cmd">
+                            <div>
+                                <button class="btn btn-primary" ng-click="vm.editItem(item)" ng-hide="vm.currentEdit[item.id]"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-danger" ng-click="vm.deleteItem(item)" ng-hide="vm.currentEdit[item.id]"><i class="fa fa-trash"></i></button>
+
+                                <button class="btn btn-success" ng-click="vm.saveItem(item)" ng-show="vm.currentEdit[item.id]"><i class="fa fa-save"></i></button>
+                                <button class="btn btn-warning" ng-click="vm.cancelItem(item)" ng-show="vm.currentEdit[item.id]"><i class="fa fa-ban"></i></button>
+                            </div>
+                        </td>
+
+                        <td ng-hide="vm.currentEdit[item.id]">
+                            {{item.amount | currency}}
+                        </td>
+                        <td class="fourth" ng-show="vm.currentEdit[item.id]">
+                            <input type="number" class="form-control" step="0.01" ng-model="item.amount">
+                        </td>
+
+                        <td ng-hide="vm.currentEdit[item.id]">
+                            {{item.donationDate | date:'MM/dd/yyyy'}}
+                        </td>
+                        <td class="fourth" ng-show="vm.currentEdit[item.id]">
+                            <!--<input type="date" class="form-control" as-date ng-model="item.donationDate">-->
+                            <p class="input-group">
+                                <input type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy"
+                                       ng-model="item.donationDate" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="status.opened = !status.opened"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </td>
+
+                        <td ng-hide="vm.currentEdit[item.id]">{{item.taxYear}}</td>
+                        <td ng-show="vm.currentEdit[item.id]">
+                            <input type="text" readonly="" ng-model="item.taxYear" class="form-control">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        
+    </div>
+
 </div>
 <div class="modal-footer">
-    <button class="btn btn-success" ng-click="vm.save()">Save</button>
-    <button class="btn" ng-click="$close()">Cancel</button>
+    <button class="btn btn-success" ng-show="vm.hasChanges" ng-click="vm.saveChanges()">Save Changes</button>
+    <button class="btn btn-danger" ng-show="vm.hasChanges" ng-click="$close()">Discard Changes</button>
+    <button class="btn btn-primary" ng-hide="vm.hasChanges" ng-click="$close()">Close</button>
 </div>

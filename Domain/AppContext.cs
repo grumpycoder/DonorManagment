@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Domain
 {
@@ -28,7 +27,7 @@ namespace Domain
             modelBuilder.Entity<IdentityRole>().ToTable("Roles", "Security");
 
             modelBuilder.Entity<Constituent>().HasMany(t => t.TaxItems);
-
+            modelBuilder.Entity<TaxItem>().Property(p => p.DonationDate).HasColumnType("date");
         }
 
         public DbSet<Donor> Donors { get; set; }

@@ -64,7 +64,8 @@ namespace Web.Controllers.api
         {
         }
 
-        public void Delete(int id)
+        [HttpDelete]
+        public void Delete(List<TaxItem> list)
         {
         }
 

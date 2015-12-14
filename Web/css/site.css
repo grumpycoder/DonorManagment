@@ -1,3 +1,45 @@
 ﻿[ng-click] {
 	cursor: pointer;
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+/*table.table tr > td:first-child {
+	width: 15%;
+	horiz-align: right;
+	text-align: right;
+}*/
+
+.table td.fit, 
+.table th.fit {
+    white-space: normal;
+    width: 1%;
+}
+
+.table td.cmd {
+    width: 15%;
+}
+
+
+.table td.fourth {
+    width: 25%;
+}
+
+.table td.third {
+    width: 33%;
+}
+
+.table td.two-third {
+    width: 20%;
+}
+
+table td.cmd {
+    white-space: nowrap;
+}
+
+/*.table td, th {
+    white-space: nowrap;
+    width: 1%;
+}*/

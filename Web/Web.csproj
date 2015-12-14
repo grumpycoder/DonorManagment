@@ -212,6 +212,8 @@
     <Content Include="css\site.css" />
     <Content Include="img\footer-bg.jpg" />
     <Content Include="js\apps\common\constituent.service.js" />
+    <Content Include="js\apps\directives\as-date.directive.js" />
+    <Content Include="js\apps\directives\date.js" />
     <Content Include="js\apps\TaxDataManager\templates\modal.html" />
     <Content Include="js\apps\TaxDataManager\templates\taxitems.tmpl.html" />
     <Content Include="js\apps\TaxDataUpload\TaxDataUpload.app.js" />
@@ -317,6 +319,7 @@
     <Content Include="js\plugins\jQueryUI\jquery-ui.js" />
     <Content Include="js\plugins\jQueryUI\jquery-ui.min.js" />
     <Content Include="js\plugins\jQuery\jQuery-2.1.4.min.js" />
+    <Content Include="js\plugins\moment.js" />
     <Content Include="js\plugins\slimScroll\jquery.slimscroll.js" />
     <Content Include="js\plugins\slimScroll\jquery.slimscroll.min.js" />
     <Content Include="Scripts\angular-file-model.js" />
@@ -352,6 +355,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\ng-file-input.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
