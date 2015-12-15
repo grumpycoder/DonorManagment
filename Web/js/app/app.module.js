@@ -7,6 +7,7 @@
     angular.module('app', [
         //Angular modules
         'app.core',
+        'app.data',
     
         //Feature areas
         'app.taxTemplate', 

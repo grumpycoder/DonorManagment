@@ -13,7 +13,6 @@
         //Third party modules
         'ui.bootstrap',
         'ng-file-input',
-        //'ui.date', 
         'codemwnci.markdown-edit-preview'
     ]);
 

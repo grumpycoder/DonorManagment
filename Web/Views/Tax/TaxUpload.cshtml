@@ -1,29 +1,26 @@
 ﻿
-
-
-<div ng-controller="upload as vm">
+<div ng-controller="upload as vm" ng-cloak="">
 
     <section class="content-header">
         <h1>
-            {{title}}
-            <small>{{description}}</small>
+            {{vm.title}}
+            <small>{{vm.description}}</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Tax Upload</li>
+            <li class="active">Data Upload</li>
         </ol>
     </section>
 
     <section class="content">
         <div class="box box-primary">
             <div class="box-header with-border box-success">
-                <h3 class="box-title">Upload</h3>
+                <h3 class="box-title">Upload Your Data</h3>
             </div><!-- ./box-header-->
 
             <form role="form">
                 <div class="box-body">
                     <div class="form-group">
-                        @*                        <label for="exampleInputFile">Upload Tax File</label>*@
                         <input type="file" ng-model="vm.file">
                         <p class="help-block">Choose your data file. Click Additional Notes below for file format information.</p>
                     </div>
@@ -31,7 +28,6 @@
 
                 <div class="box-footer">
                     <button class="btn btn-success" ng-click="vm.processFile()" ng-disabled="!vm.file">Load File</button>
-                    @*                    <button class="btn btn-success" ng-click="vm.processFile()" ng-disabled="!vm.file || vm.isProcessing">Load File</button>*@
                 </div><!-- ./box-footer -->
             </form>
             <div class="overlay" ng-show="vm.isProcessing">
@@ -75,7 +71,8 @@
         </div>
 
 
-        <button class="btn btn-info" ng-click="vm.notesCollapsed = !vm.notesCollapsed"
+        <button class="btn btn-info"
+                ng-click="vm.notesCollapsed = !vm.notesCollapsed"
                 popover="Click here for additional information"
                 popover-trigger="mouseenter"
                 popover-placement="right">
@@ -117,8 +114,7 @@
 
 @section scripts
 {
-@*    @Scripts.Render("~/scripts/angular")*@
-@*    @Scripts.Render("~/scripts/taxdataupload")*@
+
 }
 
 

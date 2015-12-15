@@ -214,8 +214,8 @@
     <Content Include="js\app\app.module.js" />
     <Content Include="js\app\common\constituent.service.js" />
     <Content Include="js\app\core\core.module.js" />
-    <Content Include="js\app\directives\as-date.directive.js" />
-    <Content Include="js\app\directives\date.js" />
+    <Content Include="js\app\data\data.module.js" />
+    <Content Include="js\app\data\datacontext.js" />
     <Content Include="js\app\TaxManager\templates\modal.html" />
     <Content Include="js\app\TaxManager\templates\taxitems.tmpl.html" />
     <Content Include="js\app\TaxUpload\upload.module.js" />
@@ -397,6 +397,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="img\credit\" />
+    <Folder Include="js\app\directives\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
