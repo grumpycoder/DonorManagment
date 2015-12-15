@@ -13,7 +13,7 @@ namespace Web
                    "~/css/bootstrap/js/bootstrap.js",
                    "~/js/plugins/fastclick/fastclick.js",
                    "~/js/app.js",
-                   "~/js/plugins/slimScroll/jquery.slimscroll.js", 
+                   "~/js/plugins/slimScroll/jquery.slimscroll.js",
                    "~/js/plugins/moment.js"));
 
 
@@ -22,7 +22,7 @@ namespace Web
                       "~/css/font-awesome.css",
                       "~/css/ionicons.css",
                       "~/css/AdminLTE.css",
-                      "~/css/skins/skin-green.css", 
+                      "~/css/skins/skin-green.css",
                       "~/css/site.css"));
 
 
@@ -33,19 +33,25 @@ namespace Web
                       "~/scripts/codemwnci/Markdown.Sanitizer.js",
                       "~/scripts/codemwnci/bootstrap-markdown.js",
                       "~/scripts/codemwnci/markdown-editpreview-ng.js")
-                      .IncludeDirectory("~/js/apps/directives", "*.js"));
+                      );
+
+            bundles.Add(new ScriptBundle("~/js/app")
+                   .IncludeDirectory("~/js/app", "*.js", false)
+                   .IncludeDirectory("~/js/app/directives", "*.js")
+                   .IncludeDirectory("~/js/app/taxtemplate", "*.js", true)
+                   );
 
 
             bundles.Add(new ScriptBundle("~/scripts/taxtemplate")
-                   .IncludeDirectory("~/js/apps/taxtemplate/", "*.js", true));
+                   .IncludeDirectory("~/js/app/taxtemplate/", "*.js", true));
 
             bundles.Add(new ScriptBundle("~/scripts/taxdatamanager")
                    .Include("~/scripts/ng-file-input.js")
-                   .IncludeDirectory("~/js/apps/taxdatamanager/", "*.js", true));
+                   .IncludeDirectory("~/js/app/taxdatamanager/", "*.js", true));
 
-            bundles.Add(new ScriptBundle("~/scripts/taxdataupload")
+            bundles.Add(new ScriptBundle("~/scripts/taxupload")
                    .Include("~/scripts/ng-file-input.js")
-                   .IncludeDirectory("~/js/apps/taxdataupload/", "*.js", true));
+                   .IncludeDirectory("~/js/app/taxupload/", "*.js", true));
 
             bundles.Add(new StyleBundle("~/css/all.css")
                    .Include("~/content/font-awesome.css")

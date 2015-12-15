@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,8 +36,30 @@
     <!-- ./wrapper -->
 
     @Scripts.Render("~/scripts/all")
+    @*@Scripts.Render("~/scripts/angular")*@
+
+    <script src="~/scripts/angular.js"></script>
+    <script src="~/scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="~/scripts/codemwnci/Markdown.Converter.js"></script>
+    <script src="~/scripts/codemwnci/Markdown.Sanitizer.js"></script>
+    <script src="~/scripts/codemwnci/bootstrap-markdown.js"></script>
+    <script src="~/scripts/codemwnci/markdown-editpreview-ng.js"></script>
+    <script src="~/Scripts/ng-file-input.js"></script>
+    <script src="~/js/app/directives/date.js"></script>
+    <script src="~/js/app/directives/as-date.directive.js"></script>
+    <script src="~/js/app/app.module.js"></script>
+    <script src="~/js/app/core/core.module.js"></script>
+    <script src="~/js/app/TaxTemplate/template.module.js"></script>
+    <script src="~/js/app/TaxTemplate/template.js"></script>
+
+    <script src="~/js/app/TaxUpload/upload.module.js"></script>
+    <script src="~/js/app/TaxUpload/upload.js"></script>
+
+    <script src="~/js/app/TaxDataManager/datamanager.module.js"></script>
+    <script src="~/js/app/TaxDataManager/datamanager.js"></script>
 
 
+    @*    @Scripts.Render("~/js/app")*@
 
     @RenderSection("scripts", required: false)
 </body>

@@ -2,7 +2,7 @@
     ViewBag.Title = "Tax Manager";
 }
 
-<div ng-app="TaxDataManager" ng-controller="MainCtrl as vm" ng-cloak="">
+<div ng-controller="datamanager as vm" ng-cloak="">
     <section class="content-header">
         <h1>
             {{vm.title}}
@@ -102,6 +102,6 @@
 
 @section scripts
 {
-    @Scripts.Render("~/scripts/angular")
-    @Scripts.Render("~/scripts/taxdatamanager")
+    @*@Scripts.Render("~/scripts/angular")
+    @Scripts.Render("~/scripts/taxdatamanager")*@
 }

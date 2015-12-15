@@ -3,7 +3,7 @@
 }
 
 
-<div ng-app="TaxTemplate" ng-controller="TemplateCtrl as vm">
+<div ng-controller="template as vm">
 
     <section class="content-header">
         <h1>
@@ -245,8 +245,14 @@
 @section scripts
 {
     <link href="~/Scripts/codemwnci/bootstrap-markdown.min.css" rel="stylesheet" />
-    @Scripts.Render("~/scripts/angular")
-    @Scripts.Render("~/scripts/taxtemplate")
+    @*@Scripts.Render("~/scripts/angular")
+    
+<script src="~/js/app/app.module.js"></script>
+<script src="~/js/app/core/core.module.js"></script>
+<script src="~/js/app/TaxTemplate/template.module.js"></script>
+<script src="~/js/app/TaxTemplate/template.js"></script>*@
+@*    @Scripts.Render("~/js/app")*@
+@*    @Scripts.Render("~/scripts/taxtemplate")*@
 }
 
 

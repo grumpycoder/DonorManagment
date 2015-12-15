@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    window.TaxDataUpload.controller('MainCtrl', ['$scope', '$http', mainCtrl]);
+    angular.module('app.taxUpload').controller('upload', ['$scope', '$http', mainCtrl]);
 
     function mainCtrl($scope, $http) {
         var vm = this;

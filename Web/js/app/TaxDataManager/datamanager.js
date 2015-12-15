@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    window.TaxDataManager.controller('MainCtrl', ['$http', '$uibModal', mainCtrl]);
+    angular.module('app.taxDataManager').controller('datamanager', ['$http', '$uibModal', mainCtrl]);
 
     function mainCtrl($http, $modal) {
         var vm = this;

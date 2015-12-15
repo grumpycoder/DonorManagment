@@ -5,7 +5,8 @@
 (function () {
     'use strict';
 
-    window.TaxTemplate.controller('TemplateCtrl', ['$scope', '$http', mainCtrl]);
+    
+    angular.module('app.taxTemplate').controller('template', ['$scope', '$http', mainCtrl]);
 
     function mainCtrl($scope, $http) {
         var vmCopy = {};
