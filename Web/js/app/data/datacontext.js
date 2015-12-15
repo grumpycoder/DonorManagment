@@ -11,14 +11,16 @@
         
         var service = {
             uploadTaxData: uploadTaxData,
-            getContituents: getConstituents,
+            getTemplateById: getTemplateById,
+            getTemplateByName: getTemplateByName,
+            saveTemplate: saveTemplate,
+            getContituents: getConstituents
 
         }
 
         return service;
 
         function uploadTaxData(datafile) {
-            console.log('upload file');
             var url = '/api/tax/posttaxdata';
             var formData = new FormData();
             formData.append('file', datafile);
@@ -27,6 +29,18 @@
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
             });
+        }
+
+        function getTemplateById(id) {
+            return $http.get('/api/template/' + id);
+        }
+
+        function getTemplateByName(name) {
+            return $http.get('/api/template/' + name);
+        }
+
+        function saveTemplate(template) {
+            return $http.post('/api/template', template);
         }
 
         function getConstituents() {

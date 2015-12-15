@@ -5,9 +5,9 @@
 (function () {
     'use strict';
 
-    angular.module('app.taxUpload').controller('upload', ['$http', 'datacontext', ctrl]);
+    angular.module('app.taxUpload').controller('upload', ['datacontext', ctrl]);
 
-    function ctrl($http, datacontext) {
+    function ctrl(datacontext) {
         var vm = this;
 
         vm.title = 'Tax';
@@ -32,24 +32,9 @@
                            vm.isProcessing = false;
                            vm.file = null;
                        });;
-            //var url = '/api/tax/posttaxdata';
-            //var formData = new FormData();
-            //formData.append('file', vm.file);
-
-            //$http.post(url, formData, {
-            //    transformRequest: angular.identity,
-            //    headers: { 'Content-Type': undefined }
-            //}).success(function (response) {
-            //    vm.status = response;
-            //}).error(function (response) {
-            //    vm.status = response;
-            //}).finally(function () {
-            //    vm.isComplete = true;
-            //    vm.isProcessing = false;
-            //    vm.file = null; 
-            //});
 
         }
+
     };
 
 })();

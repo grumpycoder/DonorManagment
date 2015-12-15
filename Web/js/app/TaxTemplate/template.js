@@ -6,44 +6,40 @@
     'use strict';
 
     
-    angular.module('app.taxTemplate').controller('template', ['$scope', '$http', mainCtrl]);
+    angular.module('app.taxTemplate').controller('template', ['$scope', 'datacontext', ctrl]);
 
-    function mainCtrl($scope, $http) {
-        var vmCopy = {};
-        $scope.title = 'Tax Template';
-        $scope.description = 'Update Donor Tax page template';
-        $scope.changed = false;
-        $scope.undo = undo;
-        $scope.save = save;
+    function ctrl($scope, datacontext) {
+        var vm = this; 
+        vm.title = 'Tax Template';
+        vm.description = 'Update Donor Tax page template';
+       
+        vm.changed = false;
+        vm.undo = undo;
+        vm.save = save;
+        vm.previous = {};
 
         activate();
 
         function activate() {
-            $http.get('/api/tax/template').success(function (response) {
-                $scope.vm = response;
-                vmCopy = angular.copy($scope.vm);
-            }).error(function (response) {
-                console.log(response);
+            datacontext.getTemplateByName('donortax').then(function(response) {
+                vm.template = response.data;
+                vm.previous = angular.copy(vm.template); 
             });
         }
 
         function undo() {
+            vm.template = angular.copy(vm.previous); 
             $scope.frm.$setPristine();
-            $scope.vm = angular.copy(vmCopy);
         }
 
         function save() {
-            $scope.vm.eventCommand = 'save';
-            $http.post('/api/tax/template', $scope.vm).success(function (response) {
-                $scope.vm = response;
-                vmCopy = angular.copy($scope.vm);
+            datacontext.saveTemplate(vm.template).then(function(response) {
+                vm.previous = angular.copy(vm.template);
                 $scope.frm.$setPristine();
-            }).error(function (err) {
-                console.log(err);
             });
         }
-    }
 
+    }
 
 
 })();

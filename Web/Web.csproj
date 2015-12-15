@@ -178,6 +178,7 @@
     <Compile Include="Controllers\ApiBaseController.cs" />
     <Compile Include="Controllers\api\ConstituentApiController.cs" />
     <Compile Include="Controllers\api\DonorTaxApiController.cs" />
+    <Compile Include="Controllers\api\TemplateApiController.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Controllers\api\TaxApiController.cs" />
     <Compile Include="Controllers\api\ValuesController.cs" />
