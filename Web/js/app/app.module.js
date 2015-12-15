@@ -11,7 +11,7 @@
         //Feature areas
         'app.taxTemplate', 
         'app.taxUpload',
-        'app.taxDataManager'
+        'app.taxManager'
     ]);
 
 })();

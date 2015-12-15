@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    angular.module('app.taxDataManager').controller('datamanager', ['$http', '$uibModal', mainCtrl]);
+    angular.module('app.taxManager').controller('taxManager', ['$http', '$uibModal', mainCtrl]);
 
     function mainCtrl($http, $modal) {
         var vm = this;
@@ -48,7 +48,7 @@
 
         function editModal(item) {
             $modal.open({
-                templateUrl: '/js/apps/taxdatamanager/templates/modal.html',
+                templateUrl: '/js/app/taxmanager/templates/modal.html',
                 controller: ['$uibModalInstance', '$http', 'item', EditModalCtrl],
                 controllerAs: 'vm',
                 resolve: {
@@ -59,7 +59,7 @@
 
         function showTaxItems(id) {
             $modal.open({
-                templateUrl: '/js/apps/taxdatamanager/templates/taxitems.tmpl.html',
+                templateUrl: '/js/app/taxmanager/templates/taxitems.tmpl.html',
                 controller: ['$uibModalInstance', '$http', 'items', TaxItemsModalCtrl],
                 controllerAs: 'vm',
                 resolve: {

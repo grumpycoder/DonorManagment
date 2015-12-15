@@ -216,12 +216,12 @@
     <Content Include="js\app\core\core.module.js" />
     <Content Include="js\app\directives\as-date.directive.js" />
     <Content Include="js\app\directives\date.js" />
-    <Content Include="js\app\TaxDataManager\templates\modal.html" />
-    <Content Include="js\app\TaxDataManager\templates\taxitems.tmpl.html" />
+    <Content Include="js\app\TaxManager\templates\modal.html" />
+    <Content Include="js\app\TaxManager\templates\taxitems.tmpl.html" />
     <Content Include="js\app\TaxUpload\upload.module.js" />
     <Content Include="js\app\TaxUpload\upload.js" />
-    <Content Include="js\app\TaxDataManager\datamanager.module.js" />
-    <Content Include="js\app\TaxDataManager\datamanager.js" />
+    <Content Include="js\app\TaxManager\taxManager.module.js" />
+    <Content Include="js\app\TaxManager\taxManager.js" />
     <Content Include="js\app\TaxTemplate\template.js" />
     <Content Include="js\app\TaxTemplate\template.module.js" />
     <Content Include="Content\bootstrap-theme.css" />
