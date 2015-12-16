@@ -60,13 +60,17 @@ namespace Web.Controllers.api
             return Ok(vm);
         }
 
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        [Route("api/deletetaxitems/")]
+        public IHttpActionResult DeleteTaxItems(List<TaxItem> list)
         {
-        }
-
-        [HttpDelete]
-        public void Delete(List<TaxItem> list)
-        {
+            foreach (var taxItem in list)
+            {
+                db.TaxItems.Attach(taxItem);
+            }
+            db.TaxItems.RemoveRange(list);
+            db.SaveChanges();
+            return Ok();
         }
 
         [HttpGet]
@@ -79,7 +83,7 @@ namespace Web.Controllers.api
 
         [HttpPost]
         [Route("api/constituent/{constituentId:int}/taxes")]
-        public IHttpActionResult GetTaxItems(int constituentId, List<TaxItem> vm)
+        public IHttpActionResult UpdateTaxItems(int constituentId, List<TaxItem> vm)
         {
             var list = vm;
             EFBatchOperation.For(db, db.TaxItems).UpdateAll(list, x => x.ColumnsToUpdate(c => c.Amount, c => c.DonationDate, c => c.TaxYear));

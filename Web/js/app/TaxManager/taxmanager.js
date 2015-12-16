@@ -1,13 +1,13 @@
 ﻿// mark.lawrence 
-// DataManager.Controller.js
+// taxManager.js
 
 
 (function () {
     'use strict';
 
-    angular.module('app.taxManager').controller('taxManager', ['$http', '$uibModal', mainCtrl]);
+    angular.module('app.taxManager').controller('taxManager', ['$http', '$uibModal', 'datacontext', mainCtrl]);
 
-    function mainCtrl($http, $modal) {
+    function mainCtrl($http, $modal, datacontext) {
         var vm = this;
 
         vm.title = 'Data Manager';
@@ -30,12 +30,9 @@
         }
 
         function getConstituents() {
-            $http.post('/api/constituents', vm.result)
-                 .success(function (response) {
-                     vm.result = response;
-                     console.log(vm.result);
-
-                });
+            datacontext.getConstituents(vm).then(function (data) {
+                vm.result = data.data;
+            });
         };
 
         function search() {
@@ -48,8 +45,8 @@
 
         function editModal(item) {
             $modal.open({
-                templateUrl: '/js/app/taxmanager/templates/modal.html',
-                controller: ['$uibModalInstance', '$http', 'item', EditModalCtrl],
+                templateUrl: '/js/app/taxmanager/editConstituent.html',
+                controller: ['$uibModalInstance', '$http', 'datacontext', 'item', EditModalCtrl],
                 controllerAs: 'vm',
                 resolve: {
                     item: function () { return item; }
@@ -59,13 +56,13 @@
 
         function showTaxItems(id) {
             $modal.open({
-                templateUrl: '/js/app/taxmanager/templates/taxitems.tmpl.html',
-                controller: ['$uibModalInstance', '$http', 'items', TaxItemsModalCtrl],
+                templateUrl: '/js/app/taxmanager/taxitems.html',
+                controller: ['$uibModalInstance', 'datacontext', 'items', TaxItemsModalCtrl],
                 controllerAs: 'vm',
                 resolve: {
-                    items: function ($http) {
-                        return $http.get('/api/constituent/' + id + '/taxes').then(function (r) {
-                            return r.data;
+                    items: function (datacontext) {
+                        return datacontext.getTaxItems(id).then(function (resp) {
+                            return resp.data;
                         });
                     }
                 }
@@ -74,7 +71,7 @@
 
     };
 
-    function TaxItemsModalCtrl($modalInstance, $http, items) {
+    function TaxItemsModalCtrl($modalInstance, datacontext, items) {
         var vm = this;
         vm.taxItems = items;
         vm.years = [];
@@ -99,8 +96,6 @@
         vm.currentEdit = {};
         vm.hasChanges = false;
 
-
-
         function deleteItem(item) {
             var idx = vm.taxItems.indexOf(item);
             vm.deletedItems.push(item);
@@ -124,28 +119,38 @@
         }
 
         function saveChanges() {
-            $http.post('/api/constituent/' + constituentId + '/taxes', vm.taxItems).success(function (r) {
+
+            datacontext.saveTaxItems(constituentId, vm.taxItems).then(function (r) {
                 //NOTIFICATION HERE
-
-                vm.currentEdit[item.id] = false;
-            }).success(function () {
-
             });
-            $http.delete('/api/taxitems', vm.deletedItems);
+            
+            datacontext.deleteTaxItems(vm.deletedItems);
+
+            //$http.post('/api/constituent/' + constituentId + '/taxes', vm.taxItems).success(function (r) {
+            //    //NOTIFICATION HERE
+
+            //    vm.currentEdit[item.id] = false;
+            //}).success(function () {
+
+            //});
+            //$http.delete('/api/taxitems', vm.deletedItems);
+
             $modalInstance.close();
         }
     }
 
-    function EditModalCtrl($modalInstance, $http, item) {
+    function EditModalCtrl($modalInstance, $http, datacontext, item) {
         var vm = this;
         vm.item = item;
         vm.save = save;
 
         function save() {
-            $http.post('/api/constituent', vm.item).success(function (r) {
-                //NOTIFICATION HERE
+            datacontext.saveConstituent(vm.item).then(function (resp) {
+                console.log(resp);
+            }).finally(function () {
+                $modalInstance.close();
             });
-            $modalInstance.close();
+
         }
     }
 

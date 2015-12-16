@@ -181,7 +181,6 @@
     <Compile Include="Controllers\api\TemplateApiController.cs" />
     <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Controllers\api\TaxApiController.cs" />
-    <Compile Include="Controllers\api\ValuesController.cs" />
     <Compile Include="Controllers\web\DonorTaxController.cs" />
     <Compile Include="Models\TaxViewModel.cs" />
     <Compile Include="Services\TemplateManager.cs" />
@@ -217,8 +216,8 @@
     <Content Include="js\app\core\core.module.js" />
     <Content Include="js\app\data\data.module.js" />
     <Content Include="js\app\data\datacontext.js" />
-    <Content Include="js\app\TaxManager\templates\modal.html" />
-    <Content Include="js\app\TaxManager\templates\taxitems.tmpl.html" />
+    <Content Include="js\app\TaxManager\editConstituent.html" />
+    <Content Include="js\app\TaxManager\taxItems.html" />
     <Content Include="js\app\TaxUpload\upload.module.js" />
     <Content Include="js\app\TaxUpload\upload.js" />
     <Content Include="js\app\TaxManager\taxManager.module.js" />

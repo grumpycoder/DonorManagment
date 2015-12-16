@@ -14,8 +14,12 @@
             getTemplateById: getTemplateById,
             getTemplateByName: getTemplateByName,
             saveTemplate: saveTemplate,
-            getContituents: getConstituents
-
+            getConstituent: getConstituent,
+            getConstituents: getConstituents,
+            saveConstituent: saveConstituent,
+            getTaxItems: getTaxItems,
+            deleteTaxItems: deleteTaxItems, 
+            saveTaxItems: saveTaxItems
         }
 
         return service;
@@ -43,8 +47,31 @@
             return $http.post('/api/template', template);
         }
 
-        function getConstituents() {
-            
+        function getConstituent(id) {
+            console.log(id);
+            return $http.get('/api/constituent/' + id + '/taxes');
         }
+
+        function getConstituents(vm) {
+            return $http.post('/api/constituents', vm.result);
+        }
+
+        function saveConstituent(constituent) {
+            console.log(constituent);
+            return $http.post('/api/constituent', constituent);
+        }
+
+        function getTaxItems(constituentId) {
+            return $http.get('/api/constituent/' + constituentId + '/taxes'); 
+        }
+
+        function deleteTaxItems(items) {
+            return $http.post('/api/deletetaxitems', items);
+        }
+
+        function saveTaxItems(constituentId, items) {
+            return $http.post('/api/constituent/' + constituentId + '/taxes', items);
+        }
+
     }
 })(); 
