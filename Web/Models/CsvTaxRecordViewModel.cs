@@ -8,6 +8,7 @@ namespace Web.Models
     public class CsvTaxRecordViewModel : CsvClassMap<CsvMap>, IMapTo<TaxItem>
     {
         public string LookupId { get; set; }
+        public string FinderNumber { get; set; }
         public int ConstituentId { get; set; }
         public string Name { get; set; }
         public string EmailAddress { get; set; }

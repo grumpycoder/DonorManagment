@@ -9,6 +9,7 @@ namespace Web.Models
     {
         public int Id { get; set; }
         public string LookupId { get; set; }
+        public string FinderNumber { get; set; }
         public string Name { get; set; }
         public string Street { get; set; }
         public string Street2 { get; set; }

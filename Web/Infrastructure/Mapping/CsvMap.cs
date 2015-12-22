@@ -10,6 +10,7 @@ namespace Web.Infrastructure.Mapping
         public CsvMap()
         {
             Map(m => m.LookupId).Name("LookupID", "Lookup ID", "LookupId");
+            Map(m => m.FinderNumber).Name("FinderNumber", "findernumber", "Finder Number", "finder number");
             Map(m => m.Name).Name("Name");
             Map(m => m.EmailAddress).Name("EmailAddress", "Email address");
             Map(m => m.Addressline1).Name("Addressline1", "Address Line 1", "Address line 1");
